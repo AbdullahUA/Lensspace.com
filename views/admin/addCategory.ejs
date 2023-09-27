@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lensspace.com</title>
+  <link rel="shortcut icon" type="image/png" href="/admin/assets/images/logos/favicon.png" />
+  <link rel="stylesheet" href="/admin/assets/css/styles.min.css" />
+</head>
+
+<body>
+  <!--  Body Wrapper -->
+  <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+    data-sidebar-position="fixed" data-header-position="fixed">
+    <%-include('./includes/sidebar.ejs')%>
+    <!--  Main wrapper -->
+    <div class="body-wrapper">
+      <!--  Header Start -->
+      <%-include("./includes/header.ejs")%>
+      <!--  Header End -->
+
+  
+  <section class="content-main">
+    <div class="content-header">
+        <h2 class="content-title">Users list</h2>
+        
+    </div>
+    <div class="card mb-4">
+        <div class="card-body">
+          <h2 class="content-title">Create category</h2>
+          <div class="row">
+            <div class="col-md-6">
+                <form method="post" action="/admin/addCategory">
+                    <div class="mb-4">
+                        <label for="product_name" class="form-label">Name</label>
+                        <input type="text" placeholder="Type here" class="form-control" id="product_name" name="name"/>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label ">Description</label>
+                        <textarea placeholder="Type here" class="form-control ellipsis-text" name="description" style=" text-overflow: ellipsis;"></textarea>
+                    </div>
+                    <div class="d-grid">
+                        <button class="btn btn-primary">Create category</button>
+                    </div>
+                            
+                </form>
+                <p><%=(typeof message!=='undefined')?message:""%></p>
+
+            </div>
+         <!-- .col// -->
+        </div>
+
+            
+        </div> <!-- card-body end// -->
+    </div> <!-- card end// -->
+   
+
+</section> 
+
+
+
+  <!-- <script>
+    function blockUser(userId){
+        Swal.fire({
+            title: 'Are you sure to Block?',
+            text: "",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes,Block!',
+            timer: 4000
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url:'/admin/blockUser',
+                    method:'post',
+                    data: {
+                        userId: userId,
+                    },
+                    success:(response) => {
+                        if(response){
+                            location.reload()
+                        }
+                    }
+                })
+            }
+        })
+    }
+
+//     function unblockUser(userId){
+//         Swal.fire({
+//             title: 'Are you sure to Unblock?',
+//             text: "",
+//             icon: 'warning',
+//             showCancelButton: true,
+//             confirmButtonColor: '#3085d6',
+//             cancelButtonColor: '#d33',
+//             confirmButtonText: 'Yes,Unblock!',
+//             timer: 4000
+//         }).then((result) => {
+//             if (result.isConfirmed) {
+//                 $.ajax({
+//                     url:'/admin/unblockUser',
+//                     method:'post',
+//                     data: {
+//                         userId: userId,
+//                     },
+//                     success:(response) => {
+//                         if(response){
+//                             location.reload()
+//                         }
+//                     }
+//                 })
+//             }
+//         })
+//     }
+    
+
+//   </script> -->
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  
+
+
+
+
+
+
+<script src="/admin/assets/libs/jquery/dist/jquery.min.js"></script>
+<script src="/admin/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+<script src="/admin/assets/js/app.min.js"></script>
+<script src="/admin/assets/libs/apexcharts/dist/apexcharts.min.js"></script>
+<script src="/admin/assets/libs/simplebar/dist/simplebar.js"></script>
+<script src="/admin/assets/js/dashboard.js"></script>
+
+</body>
+
+</html>

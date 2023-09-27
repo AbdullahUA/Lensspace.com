@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lensspace.com</title>
+  <link rel="shortcut icon" type="image/png" href="/admin/assets/images/logos/favicon.png" />
+  <link rel="stylesheet" href="/admin/assets/css/styles.min.css" />
+</head>
+
+<body>
+  <!--  Body Wrapper -->
+  <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+    data-sidebar-position="fixed" data-header-position="fixed">
+    <%-include('./includes/sidebar.ejs')%>
+    <!--  Main wrapper -->
+    <div class="body-wrapper">
+      <!--  Header Start -->
+      <%-include("./includes/header.ejs")%>
+      <!--  Header End -->
+
+  
+  <section class="content-main">
+    <div class="content-header">
+        <h2 class="content-title">Users list</h2>
+        
+    </div>
+    <div class="card mb-4">
+        <div class="card-body">
+          <h2 class="content-title">Edit product</h2>
+          <div class="row">
+            
+                <form action="/admin/editProduct" method="post" enctype="multipart/form-data">
+                    <section class="content-main">
+                    
+                        <div class="row">
+                            <div class="col-6">
+                                
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="card mb-4">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <!-- <div class="col-md-3">
+                                                <h6>1. General info</h6>
+                                            </div> -->
+                                            <div class="col-md-9">
+                                                <div class="mb-4">
+                                                    <label class="form-label">Product title</label>
+                                                    <input type="text" placeholder="Type here" class="form-control" name="name" value="<%=product.name%>">
+                                                </div>
+                                                <div class="mb-4">
+                                                    <label class="form-label">Description</label>
+                                                    <textarea placeholder="Type here" class="form-control" rows="4" name="description"><%=product.description%></textarea>
+                                                </div>
+                                                <div class="mb-4">
+                                                    <label class="form-label">Category</label>
+                                                    
+                                                    <select class="form-select" name="category">
+                                                        <% category.forEach(function(category) { %>
+                                                        <option value="<%= category._id %>"><%= category.name %></option>
+                                                        <% }); %>
+                                                    </select>
+                                                </div>
+                                            </div> <!-- col.// -->
+                                        </div> <!-- row.// -->
+                                        <hr class="mb-4 mt-0">
+                                        <div class="row">
+                                            <!-- <div class="col-md-3">
+                                                <h6>2. Pricing</h6>
+                                            </div> -->
+                                            <div class="col-md-9">
+                                                <div class="mb-4">
+                                                    <label class="form-label">Cost in INR</label>
+                                                    <input type="number" placeholder="00.0" class="form-control" name="price" value="<%=product.price%>">
+                                                </div>
+                                            </div> 
+                                            <div class="mb-4">
+                                                <label class="form-label">Stock</label>
+                                                <input type="number" placeholder="0" class="form-control" name="stock" value="<%=product.stock%>">
+                                            </div><!-- col.// -->
+                                        </div> <!-- row.// -->
+                                        
+                                        <hr class="mb-4 mt-0">
+                                        <div class="row">
+                                            <!-- <div class="col-md-3">
+                                                <h6>4. Media</h6>
+                                            </div> -->
+                                            <!-- <div class="col-md-9">
+                                                <div class="mb-4">
+                                                    <label class="form-label">Main Image</label>
+                                                    <input class="form-control" type="file"  name="images">
+                                                </div>
+                                            </div> -->
+                                           
+                                            <div id="imagesPreviewContainer">
+                                                <% for(let i = 0; i < product.images.length; i++) { %>
+                                                    <div class="image-preview">
+                                                        <img src="../admin/admin-assets/imgs/product-images/<%= product.images[i] %>" id="imgView<%= i+1 %>" alt="product image" width="100px" height="100px">
+                                                        <button style="margin-left: 40px;"  class="btn btn-danger" onclick="deleteImage('<%= product.images[i] %>')">Delete</button>
+                                                    </div>
+                                                <% } %>
+                                            </div>
+                                            
+                                            <div>
+                                                <input type="file" id="productImages" name="images" class="form-control" onchange="viewImages(event)" multiple>
+                                            </div>
+                                            
+                                           
+                                        
+                                        </div> <!-- .row end// -->
+                                    </div>
+                                  
+                                        <input class="btn btn-primary" value="Publish" type="submit"></input>
+                                 
+                                </div>
+                                
+                            </div>
+                            
+                        </div>
+                        
+                        </div>
+                        <input type="hidden" value="<%=product._id%>" name="id" >
+                    </form>
+                <p><%=(typeof message!=='undefined')?message:""%></p>
+
+                
+
+            
+         <!-- .col// -->
+        </div>
+
+            
+        </div> <!-- card-body end// -->
+    </div> <!-- card end// -->
+   
+
+</section> 
+
+
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script src="/admin/assets/libs/jquery/dist/jquery.min.js"></script>
+<script src="/admin/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+<script src="/admin/assets/js/app.min.js"></script>
+<script src="/admin/assets/libs/apexcharts/dist/apexcharts.min.js"></script>
+<script src="/admin/assets/libs/simplebar/dist/simplebar.js"></script>
+<script src="/admin/assets/js/dashboard.js"></script>
+
+<script>
+    function deleteImage(imageFileName) {
+    // Make an AJAX request to delete the image from MongoDB
+    $.ajax({
+        type: "POST",
+        url: "/admin/deleteImage", // Replace with the actual route to delete the image
+        data: { fileName: product-images }, // Send the image filename to the server
+        success: function (response) {
+            if (response.success) {
+                // Image deleted successfully, remove the corresponding preview element
+                $("#imagesPreviewContainer").find("img[src*='" + imageFileName + "']").parent().remove();
+            } else {
+                // Handle error if image deletion fails
+                alert("Failed to delete image.");
+            }
+        }
+    });
+}
+
+</script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,69 @@
+
+<!doctype html>
+
+<html lang="en">
+  <head>
+   
+    
+      <%-include("./includes/headerPart.ejs")%>
+    </style>
+  </head>
+  <body>
+    <%-include("./includes/header.ejs")%>
+
+    <div class="text-center center-div" id="login">
+        <br><br><br>
+        <div class="container w-25  py-5">
+            <div class="title pb-5">
+                <h1 class="font-weight-bold text-danger">Login System</h1>
+                <br><br>
+                <span class="text-primary"><h3>Login for the existing user</h3></span>
+                <% if(locals.logout){%>
+                    <div class="text-warning text-center">
+                        <%=logout %>
+
+                    </div>
+                
+                <%}%>
+
+            </div>
+            <section class="user-dashboard page-wrapper">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <ul class="list-inline dashboard-menu text-center">
+                                <li><a class="active" href="/dashboard">Dashboard</a></li>
+                                <li><a href="/profileOrderList">Orders</a></li>
+                                <li><a href="/ProfileAddress">Address</a></li>
+                                <li><a href="/profileDetails">Profile Details</a></li>
+                      <li><a href="/wallet">Transactions</a></li>
+            
+                            </ul>
+                            <div class="dashboard-wrapper user-dashboard">
+                                <div class="media">
+                                    <div class="pull-left">
+                                        <img  class="media-object user-img" src="../theme/images/profile.jpg" alt="Image">
+                                    </div>
+                                    <div class="media-body">
+                                        <p style="line-height: 30px;">
+                                            </p>
+                                    </div>
+                                </div>
+                                <div class="total-order mt-20">
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+    <%-include("./includes/footer.ejs")%>
+
+
+
+
+    
+</body>
+

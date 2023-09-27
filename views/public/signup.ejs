@@ -1,0 +1,204 @@
+
+<!doctype html>
+
+<html lang="en">
+<head>
+    <%-include("./includes/headerPart.ejs")%>
+</head>
+<body>
+  <%-include("./includes/header.ejs")%>
+  <div class="d-flex align-items-center justify-content-center" style="min-height: 130vh;">
+    <div class="container w-50 py-5">
+      <div class="text-center">
+        <h2 class="font-weight-bold">Signup System</h2>
+      </div>
+      <form class="row login_form" id="myForm" method="post" action="/signup" onsubmit="formValidation()">
+        <div class="col-md-12 form-group">
+          <label for="name">Name:</label>
+          <input type="text" class="form-control" id="name" name="name" onkeyup=" nameValidation()">
+                <span id="nameError" class="text-danger"></span>
+        </div>
+        <div class="col-md-12 form-group">
+          <label for="mobile">Mobile:</label>
+          <input type="number" class="form-control" id="mobile" name="mobile" onkeyup="mobileValidation()">
+                <p id="err" class="text-danger"></p>
+                <span id="mobileError" class="text-danger"></span>
+        </div>
+        <div class="col-md-12 form-group">
+          <label for="email">Email:</label>
+          <input type="text" class="form-control" id="email" name="email" onkeyup="emailValidation()">
+          <span id="emailError" class="text-danger"></span>
+          <p style="color: red;"><%= (typeof message !== 'undefined') ? message : '' %></p>
+        </div>
+        <div class="col-md-12 form-group">
+          <label for="password">Password:</label>
+          <input type="password" class="form-control" id="password" name="password"  onkeyup="passwordValidation()">
+                <span id="passwordError" class="text-danger"></span>
+        </div>
+        <div class="col-md-12 form-group">
+          <label for="password">Confirm Password:</label>
+          <input type="password" class="form-control" id="confPassword" name="confPassword"  onkeyup="confPasswordValidation()">
+          <p id="err" class="text-danger"></p>
+          <span id="confPasswordError" class="text-danger"></span>
+        </div>
+      
+        
+          <div class=" col-md-12 form-group">
+              <input type="submit"  class="btn btn-primary">
+          </div>
+        
+      </form>
+    </div>
+  </div>
+
+
+
+  <%-include("./includes/footer.ejs")%>
+
+
+
+
+  
+
+
+
+  <script>
+
+
+
+    
+  
+
+    const fname = document.getElementById("name")
+    const email = document.getElementById("email")
+    const mobile = document.getElementById("mobile")
+    const password = document.getElementById("password")
+    const confPassword = document.getElementById("confPassword")
+
+
+    
+
+    const fnameError = document.getElementById("nameError")
+    const mnoError = document.getElementById("mobileError")
+    const emailError = document.getElementById("emailError")
+    const passwordError = document.getElementById("passwordError")
+    const confPasswordError = document.getElementById("confPasswordError")
+
+
+
+
+
+
+    const nameRegex = /^[A-Za-z]+$/;
+    function nameValidation(){
+      const fnameValue = fname.value
+      if(fnameValue.trim()==0){
+        fnameError.innerHTML = 'Name is required'
+        fnameError.style.color = 'red'
+        fname.style.border = "solid 2px red";
+        return false;
+      }
+
+      if(!fnameValue.match(nameRegex)){
+        fnameError.innerHTML = 'Name is not Valid'
+        fnameError.style.color = 'red'
+        fname.style.border = "solid 2px red";
+        return false;
+      }
+
+
+
+      fnameError.innerHTML = ""
+      fnameError.style.color = "green"
+      fname.style.border = "solid 2px green";
+      return true
+    }
+
+
+    const mobileRegex =  /^\d{10}$/
+    function mobileValidation(){
+      const mnoValue = mobile.value
+      if(!mnoValue.match(mobileRegex)){
+        mnoError.innerHTML = 'Mobile Number not valid'
+        mnoError.style.color = 'red'
+        mno.style.border = "solid 2px red";
+        return false;
+      }
+      mnoError.innerHTML = ""
+      mnoError.style.color = "green"
+      mno.style.border = "solid 2px green";
+      return true
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  function emailValidation(){
+      const emailValue = email.value
+      if(!emailValue.match(emailRegex)){
+        console.log("hasdlfkasdflkasjdflasjdf;lasdjflaksdjflaskd=jf")
+        emailError.innerHTML = 'Email not valid'
+        emailError.style.color = 'red'
+        email.style.border = "solid 2px red";
+        return false;
+      }
+      emailError.innerHTML = ""
+      emailError.style.color = "green"
+      email.style.border = "solid 2px green";
+      return true
+    }
+
+    
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{8,}$/;
+  function passwordValidation(){
+      const passwordValue = password.value
+
+      if(!passwordValue.match(passwordRegex)){
+        passwordError.innerHTML = 'Password should contain atleast 8 characters including one lowercase letter, one uppercase letter, one digit, and one special character'
+        passwordError.style.color = 'red'
+        password.style.border = "solid 2px red";
+        return false;
+      }
+      passwordError.innerHTML = ""
+      passwordError.style.color = "green"
+      password.style.border = "solid 2px green";
+      return true
+    }
+
+    function confPasswordValidation(){
+      const passwordValue = password.value
+      const confPasswordValue = confPassword.value
+      if(passwordValue !== confPasswordValue){
+        console.log(confPasswordValue);
+        confPasswordError.innerHTML = 'Password and Confirm Password should be same'
+        confPasswordError.style.color = 'red'
+        confPassword.style.border = "solid 2px red";
+        return false;
+      }
+      confPasswordError.innerHTML = ""
+      confPasswordError.style.color = "green"
+      confPassword.style.border = "solid 2px green";
+      return true
+    }
+
+
+    
+  
+
+
+function formValidation() {
+const isNameValid = nameValidation();
+const isMobileValid = mobileValidation();
+const isEmailValid = emailValidation();
+const isPasswordValid = passwordValidation();
+const isConfPasswordValid = confPasswordValidation();
+
+// Check if any validation failed, and return false if any did
+if (!isNameValid || !isMobileValid || !isEmailValid || !isPasswordValid || !isConfPasswordValid) {
+  return false;
+}return true;
+}
+
+</script>
+
+
+</body>
+</html>

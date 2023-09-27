@@ -1,0 +1,55 @@
+
+<!doctype html>
+
+<html lang="en">
+  <head>
+   
+    
+      <%-include("../public/includes/headerPart.ejs")%>
+    </style>
+  </head>
+  <body>
+    <%-include("../public/includes/header.ejs")%>
+
+    <div class="text-center center-div" id="login">
+        <br><br><br>
+        <div class="container w-25  py-5">
+            <div class="title pb-5">
+                <h2 class="font-weight-bold text-danger">Admin Login System</h2>
+                
+               
+                <!-- <% if(locals.logout){%>
+                    <div class="text-warning text-center">
+                        <%=logout %>
+
+                    </div>
+                
+                <%}%> -->
+            <br>
+                <%
+                    if(typeof message !=='undefined'){
+                        %>
+                          <h4><%= message %></h4>
+                        
+                   <% }%>
+
+            
+            <form action="/admin/adminLoginValidate"  method='post'class="pt-3">
+                <div class="form-group">
+                    <input type="email" class="form-control" placeholder="email" name="email">
+                    <small class="form-text text-muted text-left">Register email added</small>
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" name="password" placeholder="password">
+                </div>
+                <div class="text-center">
+                    <input type="submit" value="Login" class="btn btn-primary">
+                    <a href="/forgotPassword">Forgot Password?</a>
+                </div>
+            </form>
+        </div>
+        </div>
+    </div>
+    <%-include("../public/includes/footer.ejs")%>
+</body>
+

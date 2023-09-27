@@ -1,0 +1,68 @@
+
+const Category=require('../models/categoryModel')
+const Product=require('../models/productModel')
+
+
+const createCategory = (data) => {
+    return new Promise(async(resolve, reject) => {
+     
+      const category = new Category({ name: data.name.toLowerCase(), 
+        description: data.description});
+      category.save()
+        .then(savedCategory => {
+          resolve(savedCategory); 
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  };
+
+
+
+const unlistCategory = async(categoryId)=>{
+    try {
+      await Category.findByIdAndUpdate(categoryId,{isListed:false});
+      await Product.updateMany({ category: categoryId }, {$set:{ isListed: false }})
+    } catch (error) {
+        console.log(error)
+    }
+  }
+
+  const relistCategory = async(categoryId)=>{
+    try {
+      await Category.findByIdAndUpdate(categoryId,{isListed:true});
+      await Product.updateMany({ category: categoryId },{$set:{ isListed: true }})
+    } catch (error) {
+        console.log(error)
+    }
+  }
+
+  const loadEditCategory = (id) => {
+    return new Promise((resolve, reject) => {
+      Category.findById({ _id: id })
+        .then((Categorydata) => {
+          resolve(Categorydata);
+        })
+        .catch((error) => {
+          console.log(error.message);
+          reject(error);
+        });
+    });
+  };
+
+const updateCategory = async(categoryId,data)=>{
+    try {
+        await Category.findByIdAndUpdate({_id:categoryId},{$set:{name:data.category,description:data.description}});
+      } catch (error) {
+        console.log(error.message)
+      }
+    }
+  
+  module.exports={
+    createCategory,
+    unlistCategory,
+    relistCategory,
+    loadEditCategory,
+    updateCategory,
+  }
