@@ -255,7 +255,24 @@ header {
                                 </ul>
                     
                                 <div class="coupon_area" style="margin-top: 20px;">
-                                    <input type="text" placeholder="Enter coupon code" name="couponCode" id="couponCode" style="border: 1px solid #ddd; padding: 5px;">
+                                    <div class="form-group row coupon_area p-t-15">
+                                        <div class="col-sm-6">
+                                            <% if(coupon && coupon.length > 0) { %>
+                                                <!-- Dropdown for selecting a coupon -->
+                                                <select class="form-control" name="couponCode" id="couponCode">
+                                                    <option value="" disabled selected>Enter coupon code...</option>
+                                                    <% coupon.forEach(function(coupon) { %>
+                                                        <option value="<%= coupon.couponCode %>">
+                                                            <%= coupon.couponCode %>
+                                                        </option>
+                                                    <% }); %>
+                                                </select>
+                                            <% } else { %>
+                                                <!-- Input for coupon code (disabled if no coupons available) -->
+                                                <input type="text" class="form-control" placeholder="No coupons available" name="couponCode"
+                                                    id="couponCode" disabled>
+                                            <% } %>
+                                        </div>
                                     <a class="primary-btn" href="#" style="width: 100px; height: 40px; margin-top: 10px; background-color: #007bff; color: #fff; border: none; padding: 10px 20px; cursor: pointer; text-align: center; text-decoration: none; display: inline-block;" onclick="applyCoupon('<%= total.cartTotal %>')">Apply</a>
                                 </div>
                                 <span id="couponErr" style="color: red;"></span>
@@ -432,12 +449,7 @@ event.preventDefault();
                             razorpay(response);
                         } catch (error) {
                             console.log(error.message)
-                            // Swal.fire({
-                            //     title: 'Error!',
-                            //     text: error.message,
-                            //     icon: 'error',
-                            //     timer: 5000
-                            // });
+                         
                         }
                     }
                 },
@@ -485,7 +497,7 @@ function applyCoupon(total) {
               console.log(response,'---');
               if (response.status == true) {
                 document.getElementById('couponErr').style.color = '#19ff11'
-                document.getElementById('couponErr').innerText = "Coupon Applied SuccessFully"
+                document.getElementById('couponErr').innerText = "Coupon Applied Successfully"
                 // document.getElementById('subTotal').innerText = total - response.discountAmount
                 document.getElementById('total').innerText = '₹' + Math.floor(total - response.discountAmount)
                 document.getElementById('totalVal').value = Math.floor(total - response.discountAmount)
@@ -628,16 +640,9 @@ function applyCoupon(total) {
        
       success: (response) => {
         if (response.status) {
-          Swal.fire({
-            title: 'Order Placed!',
-            text: 'Your order has been placed successfully.',
-            icon: 'success',
-            timer: 5000
-          }).then(() => {
-            location.href = '/'
-          })
+            location.href = '/success';
         } else {
-
+            location.href = '/failure';
         }
 
       }
@@ -654,20 +659,10 @@ function applyCoupon(total) {
        
       success: (response) => {
         if (response.status) {
-          Swal.fire({
-            title: 'Order Failed!',
-            text: 'Your order is failed.',
-            icon: 'error',
-            timer: 5000
-          }).then(() => {
-            location.href = '/'
-          })
-        } else {
-
-        }
+            location.href = '/failure'
 
       }
-    })
+    }})
   }
 
 </script>

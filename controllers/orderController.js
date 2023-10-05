@@ -4,53 +4,58 @@ const orderHelper = require('../helpers/orderHelper')
 const Order = require('../models/orderModel')
 const {ObjectId}= require('mongodb')
 const { model } = require('mongoose')
+const easyinvoice = require("easyinvoice");
+const fs = require("fs");
+const { Readable } = require('stream');
+const path=require('path')
+const cartHelper= require('../helpers/cartHelper')
 const couponHelper = require('../helpers/couponHelper')
+const Coupon= require('../models/couponModel')
 
 
 
 
 
 
+const checkOut = async (req, res) => {
+  try {
+      const user = res.locals.user
+      const count = await cartHelper.getCartCount(user.id)
+      const coupon = await Coupon.find({});
 
-const checkOut = async (req,res)=>{
-    try {
-        const user = res.locals.user
-        const total = await Cart.findOne({ user: user.id });
-        const address = await Address.findOne({user:user._id}).lean().exec()
-        
-        const cart = await Cart.aggregate([
-            {
-              $match: { user: user.id }
-            },
-            {
-              $unwind: "$cartItems"
-            },
-            {
-              $lookup: {
-                from: "products",
-                localField: "cartItems.productId",
-                foreignField: "_id",
-                as: "carted"
-              }
-            },
-            {
-              $project: {
-                item: "$cartItems.productId",
-                quantity: "$cartItems.quantity",
-                total: "$cartItems.total",
-                carted: { $arrayElemAt: ["$carted", 0] }
-              }
-            }
-          ]);
+
+
+      const total = await Cart.findOne({user: user.id})
+      const address = await Address.findOne({user: user._id}).lean().exec()
+      const cart = await Cart.aggregate([
+          {$match: {user: user.id}},
+          {$unwind: "$cartItems"},
+          //   {
+          //   $match: {
+          //     "cartItems.checked": true,
+          //   },
+          // },
+          {$lookup:{
+              from: "products",
+              localField: "cartItems.productId",
+              foreignField: "_id",
+              as: "carted"
+          }},
+          {$project: {
+              item: "$cartItems.productId",
+              quantity: "$cartItems.quantity",
+              total: "$cartItems.total",
+              carted: {$arrayElemAt: ["$carted", 0]}
+          }}
+      ])
       if(address){
-        res.render('public/checkOut.ejs',{address:address.addresses,cart,total}) 
+          res.render('public/checkOut.ejs', {address: address.addresses, cart, total, count,coupon})
       }else{
-        res.render('public/checkOut.ejs',{address:[],cart,total})
+          res.render('public/checkOut.ejs', {address: [], cart, total, count,coupon})
       }
-    } catch (error) {
-        console.log(error.message)
-        
-    }
+  } catch (error) {
+      console.log(error.message)
+    }
 }
 
 
@@ -199,7 +204,7 @@ const postCheckOut  = async (req, res) => {
   
     orderHelper.verifyPayment(req.body).then(() => {
       orderHelper
-        // .changePaymentStatus(res.locals.user._id, req.body.order.receipt,req.body.payment.razorpay_payment_id)
+      .changePaymentStatus(res.locals.user._id, req.body.order.receipt,req.body.payment.razorpay_payment_id)
         .then(() => {
           res.json({ status: true });
         })
@@ -237,6 +242,111 @@ const postCheckOut  = async (req, res) => {
       console.log(error.message``)
     }
   }
+  const failure= (req,res)=>{
+    try {
+      res.render('public/failure.ejs')
+      
+    } catch (error) {
+      console.log(error.message``)
+    }
+  }
+
+  const downloadInvoice = async (req, res) => {
+    try {
+      const id = req.query.id
+      userId = res.locals.user._id;
+  
+      result = await orderHelper.findOrder(id, userId);
+      const date = result[0].createdAt.toLocaleDateString();
+      const product = result[0].productDetails;
+  
+      const order = {
+        id: id,
+        total:parseInt( result[0].totalPrice),
+        date: date,
+        payment: result[0].paymentMethod,
+        name: result[0].shippingAddress.item.name,
+        street: result[0].shippingAddress.item.address,
+        locality: result[0].shippingAddress.item.locality,
+        city: result[0].shippingAddress.item.city,
+        state: result[0].shippingAddress.item.state,
+        pincode: result[0].shippingAddress.item.pincode,
+        product: result[0].productDetails,
+      };
+  
+      const products = order.product.map((product) => ({
+        "quantity":parseInt( product.quantity),
+        "description": product.productName,
+        "tax-rate":0,
+        "price": parseInt(product.productPrice),
+      }));
+  
+    
+      var data = {
+        customize: {},
+        images: {
+          
+  
+          background: "https://public.easyinvoice.cloud/img/watermark-draft.jpg",
+        },
+  
+  
+        sender: {
+          company: "Lensspace.com",
+          address: "Kochi",
+          zip: "686633",
+          city: "Maradu",
+          country: "India",
+        },
+  
+        client: {
+          company: order.name,
+          address: order.street,
+          zip: order.pincode,
+          city: order.city,
+          // state:" <%=order.state%>",
+          country: "India",
+        },
+        information: {
+          number: order.id,
+  
+          date: order.date,
+          // Invoice due date
+          "due-date": "Nil",
+        },
+  
+        products: products,
+        // The message you would like to display on the bottom of your invoice
+        "bottom-notice": "Thank you,Keep shopping.",
+      };
+  
+      easyinvoice.createInvoice(data, async function (result) {
+        //The response will contain a base64 encoded PDF file
+        await fs.writeFileSync("invoice.pdf", result.pdf, "base64");
+  
+  
+         // Set the response headers for downloading the file
+         res.setHeader('Content-Disposition', 'attachment; filename="invoice.pdf"');
+         res.setHeader('Content-Type', 'application/pdf');
+   
+         // Create a readable stream from the PDF base64 string
+         const pdfStream = new Readable();
+         pdfStream.push(Buffer.from(result.pdf, 'base64'));
+         pdfStream.push(null);
+   
+         // Pipe the stream to the response
+         pdfStream.pipe(res);
+  
+        
+      });
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+
+
+
 module.exports={
     checkOut,
     postCheckOut,
@@ -248,5 +358,8 @@ module.exports={
     verifyCoupon,
     verifyPayment,
     paymentFailed,
-    success
+    success,
+    failure,
+    downloadInvoice,
+    
 }

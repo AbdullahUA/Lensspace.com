@@ -69,6 +69,7 @@ userRoute.get('/checkOut',auth.isLogin,orderController.checkOut)
 userRoute.post('/checkOut',auth.isLogin,orderController.postCheckOut)
 userRoute.post('/changeDefaultAddress',auth.isLogin,orderController.changePrimary)
 userRoute.get('/success',auth.isLogin,orderController.success)
+userRoute.get('/failure',auth.isLogin,orderController.failure)
 userRoute.get('/orderDetails',auth.isLogin,orderController.orderDetails)
 userRoute.get('/profileOrderList',auth.isLogin,orderController.orderList)
 userRoute.put('/cancelOrder',auth.isLogin,orderController.cancelOrder) 
@@ -76,6 +77,8 @@ userRoute.put('/cancelOrder',auth.isLogin,orderController.cancelOrder)
 //Coupon
 userRoute.get('/applyCoupon/:id',orderController.applyCoupon)
 userRoute.get('/couponVerify/:id',orderController.verifyCoupon)
+
+
 userRoute.post('/verifyPayment',orderController.verifyPayment) 
 userRoute.post('/paymentFailed',orderController.paymentFailed)
 
@@ -85,6 +88,14 @@ userRoute.post('/add-to-wishlist',auth.isLogin,wishlistController.addWishList)
 userRoute.get('/wishlist',auth.isLogin,wishlistController.getWishList)
 userRoute.delete('/remove-product-wishlist',wishlistController.removeProductWishlist)
 
+
+
+
+userRoute.get('/error-404',userController.error404)
+userRoute.get('/error-403',userController.error403)
+userRoute.get('/error-500',userController.error500)
+
+userRoute.get('/invoice',orderController.downloadInvoice)
 
 
 

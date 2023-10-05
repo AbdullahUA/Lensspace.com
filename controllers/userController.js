@@ -3,8 +3,8 @@ const { name } = require("ejs");
 const bcrypt = require("bcrypt");
 const Product = require('../models/productModel')
 const Category = require('../models/categoryModel')
-const accountSid = "AC864c7fe9a3d2d021ed48e32d129e9e23";
-const authToken = "718e34e69eaa396908817e4da98b7cfc";
+const accountSid = "ACa274248d64489ff820dac961d52ee8d1";
+const authToken = "9c890ee0ba41bfcc90d7430cca9745b2";
 const verifySid = "VA416322cca17d99e2751157998a3eaf3c";
 const client = require("twilio")(accountSid, authToken);
 const otpHelper = require('../helpers/otpHelper')
@@ -349,7 +349,6 @@ const editInfo = async (req, res) => {
 
 
 
-
 const categoryPage = async (req,res) =>{
 
   try{
@@ -385,6 +384,38 @@ const categoryPage = async (req,res) =>{
     }
 }
 
+
+const error404 = async(req,res)=>{
+  try {
+    res.render('error-404')
+    
+  } catch (error) {
+    console.log(error.message);
+    
+  }
+}
+
+const error403 = async(req,res)=>{
+  try {
+    res.render('error-403')
+    
+  } catch (error) {
+    console.log(error.message);
+    
+  }
+}
+
+const error500 = async(req,res)=>{
+  try {
+    res.render('error-500')
+    
+  } catch (error) {
+    console.log(error.message);
+    
+  }
+}
+
+
 module.exports = {
   home,
   login,
@@ -401,4 +432,7 @@ module.exports = {
   editPassword,
   editInfo,
   categoryPage,
+  error404,
+  error403,
+  error500
 };

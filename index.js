@@ -1,7 +1,20 @@
 
 const mongoose = require ("mongoose")
-mongoose.connect("mongodb://127.0.0.1:27017/user_management_system")
+require('dotenv').config()
 
+mongoose.connect(process.env.MONGODBURL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
+  
+  const db = mongoose.connection;
+  db.on('error', (error) => {
+    console.error('MongoDB connection error:', error);
+  });
+  db.once('open', () => {
+    console.log('Connected to MongoDB');
+  });
+  
 const express = require("express")
 const app = express()
 
@@ -27,6 +40,7 @@ app.use(express.static('views'))
 const userRoute = require('./routes/userRoute')
 app.use("/", userRoute)
 const adminRoute = require('./routes/adminRoute')
+
 app.use("/admin", adminRoute)
 
 

@@ -2,6 +2,10 @@ const Product=require('../models/productModel')
 const Category=require('../models/categoryModel')
 const productHelper=require('../helpers/productHelper')
 const cartHelper = require('../helpers/cartHelper')
+const fs = require('fs');
+const { promisify } = require('util');
+const unlinkAsync = promisify(fs.unlink);
+const path=require('path')
 
 
 const loadAddProduct= async(req,res)=>{
@@ -34,30 +38,30 @@ const loadProducts=async(req,res)=>{
 
 
 const createProduct = async(req, res) => {
-    try {
-      const categories = await Category.find({})
-      if (!req.body.name || req.body.name.trim().length === 0) {
-        return res.render("addProduct", { message: "Name is required",category:categories });
-    }
-    if (!req.body.description || req.body.description.trim().length === 0) {
-      return res.render("addProduct", { message: "Description is required",category:categories });
+  try {
+    const categories = await Category.find({})
+    if (!req.body.name || req.body.name.trim().length === 0) {
+      return res.render("addProduct", { message: "Name is required",category:categories });
   }
-    if(req.body.price<=0){
-      return res.render("addProduct", { message: "Product Price Should be greater than 0",category:categories });
-    }
-    if(req.body.stock< 0 || req.body.stock.trim().length === 0 ){
-      return res.render("addProduct", { message: "Stock  Should be greater than 0",category:categories });
-    }
+  if (!req.body.description || req.body.description.trim().length === 0) {
+    return res.render("addProduct", { message: "Description is required",category:categories });
+}
+  if(req.body.price<=0){
+    return res.render("addProduct", { message: "Product Price Should be greater than 0",category:categories });
+  }
+  if(req.body.stock< 0 || req.body.stock.trim().length === 0 ){
+    return res.render("addProduct", { message: "Stock  Should be greater than 0",category:categories });
+  }
 
-      const images = req.files.map(file => file.filename);
-      await productHelper.createProduct(req.body,images)
-      res.redirect('/admin/displayProduct');
-    } catch (error) {
-      console.log(error)
-      
-    }
-  
-  };
+    const images = req.files.map(file => file.filename);
+    await productHelper.createProduct(req.body,images)
+    res.redirect('/admin/displayProduct');
+  } catch (error) {
+    console.log(error)
+    
+  }
+
+};
 
   const unlistProduct=async(req,res)=>{
     try {
@@ -83,7 +87,7 @@ const createProduct = async(req, res) => {
       const id = req.query.id;
       const productData = await Product.findById({_id:id})
       res.render('updateProduct',{product:productData,category:categories})
-      console.log('rendered')
+      console.log('load edit data rendered')
       
     } catch (error) {
       console.log(error)
@@ -95,6 +99,8 @@ const createProduct = async(req, res) => {
 
   const updateProduct = async (req, res) => {
     try {
+console.log("><><><<><<><",req.body);
+console.log(req.files);
 
       const productData = await Product.findById(req.body.id);
    
@@ -112,10 +118,10 @@ const createProduct = async(req, res) => {
     if(req.body.stock<0 || req.body.stock.trim().length === 0 ){
       return res.render("updateProduct", { message: "Stock Should be greater than 0",product:productData,category:categories });
     }
-        const images = req.files.map(file => file.filename);
+        const images = req.files.map((file) => file.filename);
         const updatedImages = images.length > 0 ? images : productData.images;
-        await productHelper.updateProduct(req.body,updatedImages)
-        res.redirect('/admin/productManagement');
+        await productHelper.updateProduct(req.body,req.files.filename)
+        res.redirect('/admin/displayProduct');
     } catch (error) {
       console.log(error.message);
     }
@@ -142,24 +148,28 @@ const productDetails = async ( req, res ) => {
 }
 const deleteImage = async (req, res) => {
   try {
-    const productId = req.params.productId; 
-    const imageFilename = req.params.imageFilename;
-    const product = await Product.findById(productId);
+console.log(req.query,"ths is qury");
 
-    if (!product) {
-      return res.status(404).json({ success: false, message: 'Product not found' });
-    }
-    const imageIndex = product.images.indexOf(imageFilename);
+    const img=req.query.img
+    console.log(img,">>>>>>>");
+const id=req.query.id
 
-    if (imageIndex === -1) {
-      return res.status(404).json({ success: false, message: 'Image not found in product' });
-    }
-    product.images.splice(imageIndex, 1);
-    await product.save();
-    res.redirect('/admin/deleteImage')
+    const product = await Product.findByIdAndUpdate(id, {
+      $pull: { images: img }
+    });
+
+    console.log(product,"this is priduct");
+    const imagePath = path.join('views', 'admin', 'admin-assets', 'imgs', 'product-images', img);
+    await unlinkAsync(imagePath);
+    console.log('iam here',imagePath);
+
+    res.redirect(`/admin/editProduct?id=${id}`)
 
 
-    return res.json({ success: true, message: 'Image deleted successfully' });
+
+    
+
+    
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, message: 'Internal server error' });

@@ -116,7 +116,7 @@ const addCouponToUser =  (couponCode, userId) => {
             } else {
               resolve({
                 status: fasle,
-                message: "Counpon doesnt Exist",
+                message: "Counpon doesn't Exist",
               });
             }
           }

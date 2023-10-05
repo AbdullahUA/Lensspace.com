@@ -246,6 +246,8 @@ const changeOrderStatus = (orderId, status) => {
       console.log(error.message);
     }
   }
+
+
   const addToStock = async(orderId,userId)=>{
   
     Order.findOne({ "orders._id": new ObjectId(orderId) }).then(async(orders) => {
@@ -272,6 +274,143 @@ const changeOrderStatus = (orderId, status) => {
   }
 
 
+  const getOnlineCount =  () => {
+    return new Promise(async (resolve, reject) => {
+      const response = await Order.aggregate([
+        {
+          $unwind: "$orders",
+        },
+        {
+          $match: {
+            "orders.paymentMethod": "razorpay",
+            "orders.orderStatus": "Delivered" 
+
+          },
+        },
+        {
+          $group:{
+            _id: null,
+          totalPriceSum: { $sum: { $toInt: "$orders.totalPrice" } },
+          count: { $sum: 1 }
+
+          }
+
+        }
+
+      ]);
+      resolve(response);
+    });
+  }
+
+  const getWalletCount =  () => {
+    return new Promise(async (resolve, reject) => {
+      const response = await Order.aggregate([
+        {
+          $unwind: "$orders",
+        },
+        {
+          $match: {
+            "orders.paymentMethod": "wallet",
+            "orders.orderStatus": "Delivered" 
+
+          },
+        },
+        {
+          $group:{
+            _id: null,
+          totalPriceSum: { $sum: { $toInt: "$orders.totalPrice" } },
+          count: { $sum: 1 }
+
+          }
+
+        }
+
+      ]);
+      resolve(response);
+    });
+  }
+
+  const getCodCount =  () => {
+    return new Promise(async (resolve, reject) => {
+      const response = await Order.aggregate([
+        {
+          $unwind: "$orders",
+        },
+        {
+          $match: {
+            "orders.paymentMethod": "cod",
+            "orders.orderStatus": "Delivered" 
+
+          },
+        },
+        {
+          $group:{
+            _id: null,
+          totalPriceSum: { $sum: { $toInt: "$orders.totalPrice" } },
+          count: { $sum: 1 }
+
+          }
+
+        }
+
+      ]);
+      resolve(response);
+    });
+  }
+
+  const getSalesReport =  () => {
+    try {
+      return new Promise((resolve, reject) => {
+        Order.aggregate([
+          {
+            $unwind: "$orders",
+          },
+          {
+            $match: {
+              "orders.orderStatus": "Delivered",
+            },
+          },
+        ]).then((response) => {
+          resolve(response);
+        });
+      });
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
+
+  const postSalesReport = (date) => {
+    try {
+      const start = new Date(date.startdate);
+      const end = new Date(date.enddate);
+      return new Promise((resolve, reject) => {
+        Order.aggregate([
+          {
+            $unwind: "$orders",
+          },
+          {
+            $match: {
+              $and: [
+                { "orders.orderStatus": "Delivered" },
+                {
+                  "orders.createdAt": {
+                    $gte: start,
+                    $lte: new Date(end.getTime() + 86400000),
+                  },
+                },
+              ],
+            },
+          },
+        ])
+          .exec()
+          .then((response) => {
+            resolve(response);
+          });
+      });
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
 
 
   module.exports={
@@ -279,5 +418,10 @@ const changeOrderStatus = (orderId, status) => {
     changeOrderStatus,
     cancelOrder,
      returnOrder,
-    addToStock
+    addToStock,
+    getOnlineCount,
+    getWalletCount,
+    getCodCount,
+    getSalesReport,
+    postSalesReport
   }

@@ -12,7 +12,8 @@
       <div class="text-center">
         <h2 class="font-weight-bold">Signup System</h2>
       </div>
-      <form class="row login_form" id="myForm" method="post" action="/signup" onsubmit="formValidation()">
+
+      <form class="row login_form" id="myForm" method="post" action="/signup">
         <div class="col-md-12 form-group">
           <label for="name">Name:</label>
           <input type="text" class="form-control" id="name" name="name" onkeyup=" nameValidation()">
@@ -21,14 +22,14 @@
         <div class="col-md-12 form-group">
           <label for="mobile">Mobile:</label>
           <input type="number" class="form-control" id="mobile" name="mobile" onkeyup="mobileValidation()">
-                <p id="err" class="text-danger"></p>
+          <p id="err" class="text-danger"></p>
                 <span id="mobileError" class="text-danger"></span>
         </div>
         <div class="col-md-12 form-group">
           <label for="email">Email:</label>
           <input type="text" class="form-control" id="email" name="email" onkeyup="emailValidation()">
           <span id="emailError" class="text-danger"></span>
-          <p style="color: red;"><%= (typeof message !== 'undefined') ? message : '' %></p>
+          <!-- <p style="color: red;"><%= (typeof message !== 'undefined') ? message : '' %></p> -->
         </div>
         <div class="col-md-12 form-group">
           <label for="password">Password:</label>
@@ -41,13 +42,15 @@
           <p id="err" class="text-danger"></p>
           <span id="confPasswordError" class="text-danger"></span>
         </div>
+        
       
         
           <div class=" col-md-12 form-group">
-              <input type="submit"  class="btn btn-primary">
+            <button type="submit"  class="btn btn-primary" >Sign Up</button>
           </div>
         
       </form>
+      <%=(typeof message!=='undefined')?message:""%>
     </div>
   </div>
 
@@ -65,9 +68,8 @@
   <script>
 
 
-
+    const myForm=document.getElementById("myForm")
     
-  
 
     const fname = document.getElementById("name")
     const email = document.getElementById("email")
@@ -121,12 +123,12 @@
       if(!mnoValue.match(mobileRegex)){
         mnoError.innerHTML = 'Mobile Number not valid'
         mnoError.style.color = 'red'
-        mno.style.border = "solid 2px red";
+        mobile.style.border = "solid 2px red";
         return false;
       }
       mnoError.innerHTML = ""
       mnoError.style.color = "green"
-      mno.style.border = "solid 2px green";
+      mobile.style.border = "solid 2px green";
       return true
     }
 
@@ -134,7 +136,7 @@
   function emailValidation(){
       const emailValue = email.value
       if(!emailValue.match(emailRegex)){
-        console.log("hasdlfkasdflkasjdflasjdf;lasdjflaksdjflaskd=jf")
+        console.log("Email validation failed")
         emailError.innerHTML = 'Email not valid'
         emailError.style.color = 'red'
         email.style.border = "solid 2px red";
@@ -183,19 +185,15 @@
     
   
 
+myForm.addEventListener("submit",(event)=>{
+  event.preventDefault();
+  if(!nameValidation() || !mobileValidation() || !emailValidation() || !passwordValidation() || !confPasswordValidation()){
+    return false
+  }else{
+    myForm.submit()
+  }
+})
 
-function formValidation() {
-const isNameValid = nameValidation();
-const isMobileValid = mobileValidation();
-const isEmailValid = emailValidation();
-const isPasswordValid = passwordValidation();
-const isConfPasswordValid = confPasswordValidation();
-
-// Check if any validation failed, and return false if any did
-if (!isNameValid || !isMobileValid || !isEmailValid || !isPasswordValid || !isConfPasswordValid) {
-  return false;
-}return true;
-}
 
 </script>
 

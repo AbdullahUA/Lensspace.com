@@ -70,7 +70,7 @@
                                         <% if (order.orders.orderStatus === 'Placed') { %>
                                             <td><a href="#" onclick="cancelOrder('<%= order.orders._id %>', 'Cancel Requested'); return false;"><i class="fas fa-times"></i> Cancel</a></td>
                                         <% } else if (order.orders.orderStatus === 'Delivered') { %>
-                                            <td><a href="#" onclick="cancelOrder('<%= order.orders._id %>', 'Return Requested'); return false;"><i class="fas fa-reply"></i> Return</a></td>
+                                            <td><a href="#" onclick="returnOrder('<%= order.orders._id %>', 'Return Requested'); return false;"><i class="fas fa-reply"></i> Return</a></td>
                                         <% } else { %>
                                             <td>....</td>
                                             
@@ -175,6 +175,40 @@
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
             confirmButtonText: 'Yes, Cancel it!',
+            timer: 5000,
+            customClass: {
+            container: 'swal-wide', // Custom CSS class for the container
+              },
+          }).then((result) => {
+            if (result.isConfirmed) {
+              $.ajax({
+                  url: '/cancelOrder',
+                  method: 'put',
+                  data: {
+                      orderId: orderId,
+                      status: status
+                  },
+                  success: (response) => {
+                      if (response) {
+                          location.reload()
+                      }
+                     
+                  }
+              });
+            }
+            
+          })
+      }
+
+
+      function returnOrder(orderId, status) {
+              Swal.fire({
+            title: 'Are you sure to Return this order',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, Return it!',
             timer: 5000,
             customClass: {
             container: 'swal-wide', // Custom CSS class for the container
