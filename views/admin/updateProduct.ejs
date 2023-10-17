@@ -7,6 +7,9 @@
   <title>Lensspace.com</title>
   <link rel="shortcut icon" type="image/png" href="/admin/assets/images/logos/favicon.png" />
   <link rel="stylesheet" href="/admin/assets/css/styles.min.css" />
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
@@ -101,13 +104,17 @@
                                                 <% for(let i = 0; i < product.images.length; i++) { %>
                                                     <div class="image-preview">
                                                         <img src="../admin/admin-assets/imgs/product-images/<%= product.images[i] %>" id="imgView<%= i+1 %>" alt="product image" width="100px" height="100px">
-                                                        <button style="margin-left: 40px;"  class="btn btn-danger" onclick="deleteImage('<%= product.images[i] %>')">Delete</button>
+                                                        <button style="margin-left: 40px;"  class="btn btn-danger" onclick="deleteImage('imgView<%= i+1 %>')">Delete</button>
                                                     </div>
                                                 <% } %>
                                             </div>
                                             
                                             <div>
-                                                <input type="file" id="productImages" name="images" class="form-control" onchange="viewImages(event)" multiple>
+                                                <input type="hidden" id="deletedImages" name="deletedImages" value="">
+                                                <div>
+                                                    <input type="file" id="productImages" name="images"class="form-control" onchange="viewImages(event)"
+                                                    multiple>
+                                                </div>
                                             </div>
                                             
                                            
@@ -144,9 +151,7 @@
 
 
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
-<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
 <script src="/admin/assets/libs/jquery/dist/jquery.min.js"></script>
 <script src="/admin/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
@@ -157,24 +162,22 @@
 <script src="/admin/assets/js/dashboard.js"></script>
 
 <script>
-    function deleteImage(imageFileName) {
-    // Make an AJAX request to delete the image from MongoDB
-    $.ajax({
-        type: "POST",
-        url: "/admin/deleteImage", // Replace with the actual route to delete the image
-        data: { fileName: product-images }, // Send the image filename to the server
-        success: function (response) {
-            if (response.success) {
-                // Image deleted successfully, remove the corresponding preview element
-                $("#imagesPreviewContainer").find("img[src*='" + imageFileName + "']").parent().remove();
-            } else {
-                // Handle error if image deletion fails
-                alert("Failed to delete image.");
-            }
-        }
-    });
-}
+ function deleteImage(imgViewId) {
+            const imageElement = document.getElementById(imgViewId);
+            const deletedImagesInput = document.getElementById('deletedImages');
 
+            // Add the image's filename to the deleted images list
+            if (deletedImagesInput.value) {
+                deletedImagesInput.value += ',' + imageElement.src.split('/').pop();
+            } else {
+                deletedImagesInput.value = imageElement.src.split('/').pop();
+            }
+
+            // Remove image preview and its delete button from the page
+            const imageWrapper = imageElement.parentNode;  // Assuming this is the container of both the image and the delete button.
+            imageWrapper.parentNode.removeChild(imageWrapper);
+
+        }
 </script>
 
 

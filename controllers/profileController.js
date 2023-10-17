@@ -3,21 +3,13 @@ const Address = require('../models/addressModel')
 const User = require('../models/userModel')
 
 
-const loadDashboard = async(req,res)=>{
-    try {
-      console.log('hai')
-      res.render('public/dashboard.ejs')
-    } catch (error) {
-      console.log(error.message);
-      res.redirect('/error-500')
-    }
-  }
+
 
   const profileDetails = async (req, res) => {
     try {
       let arr = []
       const user = res.locals.user;
-      res.render("public/profileDetails.ejs", { user, arr });
+      res.render("profileDetails", { user, arr });
     } catch (error) {
       console.log(error.message);
       res.redirect('/error-500')
@@ -108,7 +100,7 @@ const loadDashboard = async(req,res)=>{
         const ad = address.forEach((x) => {
           return (arr = x.addresses);
         });
-        res.render("public/profileAddress.ejs", { user, arr });
+        res.render("profileAddress", { user, arr });
       }
       
     } catch (error) {
@@ -176,7 +168,7 @@ const loadDashboard = async(req,res)=>{
         {$project:{walletTransaction:1,wallet:1}}
       ])
   
-      res.render('public/walletTransaction.ejs',{wallet})
+      res.render('walletTransaction',{wallet})
       
     } catch (error) {
       console.log(error.message);
@@ -188,7 +180,6 @@ const loadDashboard = async(req,res)=>{
 
 
   module.exports = {
-    loadDashboard,
     profileDetails,
     submitAddress,
     editAddress,

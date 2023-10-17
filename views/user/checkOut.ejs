@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout Page</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.min.js"></script>
+   
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.min.js"></script>
+    <%-include("../public/includes/headerPart.ejs")%>
+    <%-include("../public/includes/header.ejs")%>
+    <br>
+    <br>
+    <br>
+</head>
+<body>
+<style>
+    /* Reset some default styles */
+body, h1, h2, p {
+    margin: 0;
+    padding: 0;
+}
+
+/* Define a background color for the page */
+body {
+    background-color: #f8f8f8;
+    font-family: Arial, sans-serif;
+}
+
+/* Style the header */
+header {
+    background-color: #ee2f2f;
+    color: #fff;
+    text-align: center;
+    padding: 7px 0;
+}
+
+
+.checkout-container {
+    display: flex;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.billing-details {
+    flex: 1;
+    padding: 20px;
+    background-color: #f5f5f5;
+}
+
+.order-summary {
+    flex: 1;
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+}
+
+.primary-btn {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+.primary-btn:hover {
+    background-color: #0056b3;
+}
+        /* CSS styles for the popup form */
+        .form-popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #f8f8f8;
+            border-radius: 0px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+            z-index: 10000;
+            padding: 40px;
+            color: #000000;
+            overflow-y: auto;
+            max-height: 80vh;
+        }
+
+        .form-container {
+            height: 100%;
+        }
+
+        .form-popup input[type="text"],
+        .form-popup input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 50px;
+            border: none;
+        }
+
+        .form-popup .btn-group {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .form-popup .btn {
+            margin-left: 10px;
+        }
+
+        .form-popup::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .form-popup::-webkit-scrollbar-track {
+            background-color: #f1f1f1;
+        }
+
+        .form-popup::-webkit-scrollbar-thumb {
+            background-color: #888;
+        }
+
+        .form-popup::-webkit-scrollbar-thumb:hover {
+            background-color: #555;
+        }
+    
+</style>
+
+
+<body>
+
+   
+
+
+
+    <!--================Checkout Area =================-->
+    <section class="checkout_area section_gap" style="margin-top: 5px;">
+        <div class="container">
+        
+           
+            <div class="billing_details">
+                <div class="row">
+                    <div class="col-lg-8">
+                        <h3>Billing Details</h3>
+                        <%if(address[0]){%>
+                        <form class="row contact_form" action="#" method="post" novalidate="novalidate">
+                            <div class="col-md-6 form-group p_star">
+                                <input type="text" class="form-control" id="first" name="name" value="<%=address[0].name%>">
+                                </span>
+                            </div>
+                            <div class="col-md-6 form-group p_star">
+                                <input type="text" class="form-control" id="number" name="number" value="<%=address[0].mobileNumber%>">
+                            </span>
+                            </div>
+                         
+                            <div class="col-md-12 form-group p_star">
+                                <input type="text" class="form-control" id="add1" name="address" value="<%=address[0].address%>" >
+                            </div>
+                            <div class="col-md-12 form-group p_star">
+                                <input type="text" class="form-control" id="add1" name="locality" value="<%=address[0].locality%>">
+                            </div>
+                            <div class="col-md-12 form-group p_star">
+                                <input type="text" class="form-control" id="add1" name="city" value="<%=address[0].city%>">
+                            </div>
+                           
+                            <div class="col-md-12 form-group">
+                                <input type="text" class="form-control" id="zip" name="zip" value="<%=address[0].pincode%>">
+                            </div>
+                            <div class="col-md-12 form-group p_star">
+                                <input type="text" class="form-control" id="add1" name="state" value="<%=address[0].state%>">
+                            </div>
+                            <%}else{%>
+                                <div class="col-md-12 form-group p_star">
+                                    <h1>Please Add An Address</h1>
+                                </div>
+    
+                                <%}%>
+
+                        </form>
+
+                        <div class="banner-desc" style="margin-left: 10px;">
+                            <section class="intro">
+                              <button type="button" class="btn btn-success" onclick="addAddress()">Add New Address</button>
+                            </section>
+                        </div>
+
+
+                        <div class="form-popup" id="popupFormadd">
+                          <div class="form-container">
+                              <h3>Add Adresss</h3>
+                              <input type="hidden" id="idInput" placeholder="Name">
+              
+                              <input type="text" id="nameInputadd" placeholder="Name">
+                              <input type="text" id="mobileNumberInputadd" placeholder="Mobile Number">
+                              <input type="text" id="addressInputadd" placeholder="Address">
+                              <input type="text" id="localityInputadd" placeholder="Locality">
+                              <input type="text" id="cityInputadd" placeholder="City">
+                              <input type="text" id="pincodeInputadd" placeholder="Pincode">
+                              <input type="text" id="stateInputadd" placeholder="State">
+              
+                              <div class="btn-group">
+                                  <button type="button" class="btn" onclick="closePopup()">Close</button>
+                                  <button type="button" class="btn" onclick="saveAddress()">Save</button>
+                              </div>
+                          </div>
+                      </div>
+   
+                        
+                    </div>
+                    <div class="col-lg-4">
+                        <form id="checkOut-form">
+                            <div class="order_box" style="padding: 20px; background-color: #fff; border: 1px solid #ddd;">
+                                <h2 style="font-size: 24px; margin-bottom: 10px;">Your Order</h2>
+                    
+                                <ul class="list" style="list-style: none; padding: 0;">
+                                    <li style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                        <a href="#" style="text-decoration: none; color: #333;">Product</a>
+                                        <span>Total</span>
+                                    </li>
+                                    <% cart.forEach(function(cart,index) { %>
+                                    <li style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                        <a href="#" style="text-decoration: none; color: #333;"><%= cart.carted.name %></a>
+                                        <span class="middle" style="color: #333;">x <%= cart.quantity %></span>
+                                        <span class="last" style="color: #333;">₹<%= cart.total %></span>
+                                    </li>
+                                    <% }) %>
+                                </ul>
+                    
+                                <ul class="list list_2" style="list-style: none; padding: 0; margin-top: 20px;">
+                                    <li style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                        <a href="#" style="text-decoration: none; color: #333;">Subtotal</a>
+                                        <span id="subTotal" style="color: #333;">₹<%= total.cartTotal %></span>
+                                    </li>
+                                    <li style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                        <a href="#" style="text-decoration: none; color: #333;">Discount</a>
+                                        <span id="couponOffer" style="color: #333;"></span>
+                                    </li>
+                                    <li style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                        <a href="#" style="text-decoration: none; color: #333;">Total</a>
+                                        <span id="total" style="color: #333;">₹<%= total.cartTotal %></span>
+                                    </li>
+                                    <input type="hidden" name="discountPercentage" id="discountPercentage" value="0">
+                                    <input type="hidden" name="discountAmount" id="discountAmount" value="0">
+                                    <input type="hidden" name="total" value="<%= total.cartTotal %>" id="totalVal">
+                                    <% if (address[0]) { %>
+                                    <input type="hidden" name="address" value="<%= address[0]._id %>">
+                                    <% } else { %>
+                                    <% } %>
+                                </ul>
+                    
+                                <div class="coupon_area" style="margin-top: 20px;">
+                                    <div class="form-group row coupon_area p-t-15">
+                                        <div class="col-sm-6">
+                                            <% if(coupon && coupon.length > 0) { %>
+                                                <!-- Dropdown for selecting a coupon -->
+                                                <select class="form-control" name="couponCode" id="couponCode">
+                                                    <option value="" disabled selected>Enter coupon code...</option>
+                                                    <% coupon.forEach(function(coupon) { %>
+                                                        <option value="<%= coupon.couponCode %>">
+                                                            <%= coupon.couponCode %>
+                                                        </option>
+                                                    <% }); %>
+                                                </select>
+                                            <% } else { %>
+                                                <!-- Input for coupon code (disabled if no coupons available) -->
+                                                <input type="text" class="form-control" placeholder="No coupons available" name="couponCode"
+                                                    id="couponCode" disabled>
+                                            <% } %>
+                                        </div>
+                                    <a class="primary-btn" href="#" style="width: 100px; height: 40px; margin-top: 10px; background-color: #007bff; color: #fff; border: none; padding: 10px 20px; cursor: pointer; text-align: center; text-decoration: none; display: inline-block;" onclick="applyCoupon('<%= total.cartTotal %>')">Apply</a>
+                                </div>
+                                <span id="couponErr" style="color: red;"></span>
+                    
+                                <div class="payment_item" style="margin-top: 20px;">
+                                    <div class="radion_btn" style="display: flex; align-items: center;">
+                                        <input type="radio" id="f-option4" name="paymentOption" value="wallet" style="margin-right: 10px;">
+                                        <label for="f-option4">Wallet</label>
+                                        
+                                    </div>
+                                    <p style="color: #333;">Pay the amount from your wallet</p>
+                                </div>
+                    
+                                <div class="payment_item">
+                                    <div class="radion_btn" style="display: flex; align-items: center;">
+                                        <input type="radio" id="f-option5" name="paymentOption" value="cod" checked style="margin-right: 10px;">
+                                        <label for="f-option5">Cash On Delivery</label>
+                                       
+                                    </div>
+                                    <p style="color: #333;">Pay the amount at your doorstep</p>
+                                </div>
+                                <div class="payment_item">
+                                    <div class="radion_btn" style="display: flex; align-items: center;">
+                                        <input type="radio" id="f-option6" name="paymentOption" value="razorpay" checked style="margin-right: 10px;">
+                                        <label for="f-option6">Razorpay</label>
+                                       
+                                    </div>
+                                    <p style="color: #333;">Pay through Razorpay</p>
+                                </div>
+                    
+                                <% if (address[0]) { %>
+                                <button class="primary-btn" style="width: 100%; background-color: #007bff; color: #fff; border: none; padding: 10px 20px; cursor: pointer;" onclick="proceedToPayment()">Place Order</button>
+                                <% } else { %>
+                                <button class="primary-btn" style="width: 100%; background-color: #ccc; color: #fff; border: none; padding: 10px 20px; cursor: not-allowed;" disabled onclick="proceedToPayment()">Place Order</button>
+                                <% } %>
+                            </div>
+                        </form>
+                    </div>
+                    
+                </div>
+               
+       
+            <div class="billing-details">
+             <p class="top-title special">Addresses</p>
+             </div>
+             <br>
+
+             <div class="comment-list grid-view" style="height: 500px; overflow:scroll;" >
+                    <form id="addressForm" action="/changeDefaultAddress" method="POST">
+                    <% address.forEach(function(address,index) {%>
+                        <label for="address<%=index%>">Address</label>
+                    <input type="radio" id="addressRadio{<%=index%>" name="addressRadio" value="<%=address._id%>" onchange="this.form.submit()">
+                    <br>
+                    <div class="single-comment grid-item">
+                        <div class="user justify-content-between d-flex">
+                        <div class="desc">
+                            <h5>Name: <%=address.name%></h5>
+                            <h5>Number: <%=address.mobileNumber%></h5>
+                            <h5>Address: <%=address.address%></h5>
+                            <h5>City: <%=address.city%></h5>
+                            <h5>Street: <%=address.locality%></h5>
+                            <h5>Pin: <%=address.pincode%></h5>
+                        </div>
+                        </div>
+                    </div>
+                    <br>
+                    <% }) %>
+                </form>
+            </div>
+           </div> 
+            
+            </div>
+        </div>
+    </section>
+    <!--================End Checkout Area =================-->
+
+    
+    	
+
+     <!-- Main jQuery -->
+     <script src="plugins/jquery/dist/jquery.min.js"></script>
+     <!-- Bootstrap 3.1 -->
+     <script src="plugins/bootstrap/js/bootstrap.min.js"></script>
+     <!-- Bootstrap Touchpin -->
+     <script src="plugins/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.js"></script>
+     <!-- Instagram Feed Js -->
+     <script src="plugins/instafeed/instafeed.min.js"></script>
+     <!-- Video Lightbox Plugin -->
+     <script src="plugins/ekko-lightbox/dist/ekko-lightbox.min.js"></script>
+     <!-- Count Down Js -->
+     <script src="plugins/syo-timer/build/jquery.syotimer.min.js"></script>
+ 
+     <!-- slick Carousel -->
+     <script src="plugins/slick/slick.min.js"></script>
+     <script src="plugins/slick/slick-animation.min.js"></script>
+ 
+     <!-- Google Mapl -->
+     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCC72vZw-6tGqFyRhhg5CkF2fqfILn2Tsw"></script>
+     <script type="text/javascript" src="plugins/google-map/gmap.js"></script>
+     <script src="js/script.js"></script>
+  
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script src="../user-assets/js/vendor/jquery-2.2.4.min.js"></script>
+    <script src="../user-assets/https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
+        crossorigin="anonymous"></script>
+    <script src="../user-assets/js/vendor/bootstrap.min.js"></script>
+    <script src="../user-assets/js/jquery.ajaxchimp.min.js"></script>
+    <script src="../user-assets/js/jquery.nice-select.min.js"></script>
+    <script src="../user-assets/js/jquery.sticky.js"></script>
+    <script src="../user-assets/js/nouislider.min.js"></script>
+    <script src="../user-assets/js/jquery.magnific-popup.min.js"></script>
+    <script src="../user-assets/js/owl.carousel.min.js"></script>
+    <!--gmaps Js-->
+    <script src="../user-assets/https://maps.googleapis.com/maps/api/js?key=AIzaSyCjCGmQ0Uq4exrzdcL6rvxywDDOvfAu6eE"></script>
+    <script src="../user-assets/js/gmaps.min.js"></script>
+    <script src="../user-assets/js/main.js"></script>
+
+
+
+   
+<script>
+  function proceedToPayment() {
+
+console.log("proceedToPayment function called");
+event.preventDefault();
+            $.ajax({
+                url: "/checkOut",
+
+                method: 'POST',
+                data: $('#checkOut-form').serialize(),
+                success: function (response) {
+                    if (response.error) {
+                        if (response.error === "Insufficient wallet balance!") {
+                            Swal.fire({
+                                title: 'Error!',
+                                text: 'Insufficient wallet balance!',
+                                icon: 'error',
+                                timer: 5000
+                            });
+                        } else {
+                            Swal.fire({
+                                title: 'Error!',
+                                text: response.error,
+                                icon: 'error',
+                                timer: 5000
+                            });
+                        }
+                    } else if (response.codStatus == true) {
+                        
+                        location.href = '/success';
+                    } else if (response.orderStatus == true) {
+                       location.href = '/success';
+                    } else if (response.status == "OrderFailed") {
+                        Swal.fire({
+                            title: 'Order Failed!',
+                            text: 'Your Product is Out of Stock. Please Check after some time',
+                            icon: 'error',
+                            timer: 5000
+                        }).then(() => {
+                            location.href = '/'
+                        });
+                    } else if
+                     (response.status == 'blocked') {
+                        Swal.fire({
+                            title: 'You are blocked',
+                            icon: 'error',
+                            timer: 5000
+                        });
+                        setTimeout(() => {
+                            window.location.href = "/logout"
+                        }, 5000);
+                    } else {
+                        try {
+                            razorpay(response);
+                        } catch (error) {
+                            console.log(error.message)
+                         
+                        }
+                    }
+                },
+                error: function (jqXHR) {
+                    try {
+                        let errResponse = JSON.parse(jqXHR.responseText);
+                        if (errResponse.error && errResponse.error === "Insufficient wallet balance!") {
+                            Swal.fire({
+                                title: 'Error!',
+                                text: 'Insufficient wallet balance!',
+                                icon: 'error',
+                                timer: 5000
+                            });
+                        } else {
+                            Swal.fire({
+                                title: 'Error!',
+                                text: 'An unexpected error occurred.',
+                                icon: 'error',
+                                timer: 5000
+                            });
+                        }
+                    } catch (err) {
+                        Swal.fire({
+                            title: 'Error!',
+                            text: 'An unexpected error occurred.',
+                            icon: 'error',
+                            timer: 5000
+                        });
+                    }
+                }
+            });
+        }
+function applyCoupon(total) {
+    let couponCode = document.getElementById('couponCode').value
+    $.ajax({
+      url: '/couponVerify/' + couponCode,
+      method: 'GET',
+      success: (response) => {
+        if (response.status == true) {
+
+          $.ajax({
+            url: '/applyCoupon/' + couponCode,
+            method: 'GET',
+            success: (response) => {
+              console.log(response,'---');
+              if (response.status == true) {
+                document.getElementById('couponErr').style.color = '#19ff11'
+                document.getElementById('couponErr').innerText = "Coupon Applied Successfully"
+                // document.getElementById('subTotal').innerText = total - response.discountAmount
+                document.getElementById('total').innerText = '₹' + Math.floor(total - response.discountAmount)
+                document.getElementById('totalVal').value = Math.floor(total - response.discountAmount)
+                document.getElementById('couponOffer').innerText = response.discount + '%'
+                document.getElementById('discountPercentage').value = response.discount
+                document.getElementById('discountAmount').value = Math.ceil(response.discountAmount)
+
+
+              } else {
+                document.getElementById('couponErr').style.color = "#ff0707" 
+                document.getElementById('couponErr').innerText = response.message
+              }
+
+            }
+          })
+        } else {
+          document.getElementById('couponErr').style.color = "#ff0707"
+          document.getElementById('couponErr').innerText = response.message
+
+          setTimeout(function() {
+            location.reload()
+          }, 5000)
+        }
+
+      }
+    })
+  }
+
+
+
+</script>
+<script>
+    // Get references to the elements
+    let popupWrappers = document.querySelectorAll(".popup-wrapper");
+    let popupForms = document.querySelectorAll(".popup-form");
+    let popupBtns = document.querySelectorAll(".btn-reply");
+    let popupCloses = document.querySelectorAll(".close-button");
+
+    // Add event listeners to each popup button
+    popupBtns.forEach((btn, index) => {
+        btn.addEventListener("click", (e) => {
+            e.preventDefault();
+            showPopup(index);
+        });
+    });
+
+    // Add event listeners to each popup close button
+    popupCloses.forEach((closeBtn, index) => {
+        closeBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            removePopup(index);
+        });
+    });
+
+    // Add event listeners to each popup form
+    popupForms.forEach((form) => {
+        form.addEventListener("submit", () => {
+            // Implement your form submission logic here
+            removePopup();
+        });
+    });
+
+    // Add event listeners to each popup wrapper
+    popupWrappers.forEach((wrapper, index) => {
+        wrapper.addEventListener("click", (e) => {
+            let target = e.target;
+            if (target.classList.contains("popup-wrapper")) {
+                removePopup(index);
+            } else {
+                return;
+            }
+        });
+    });
+
+    function showPopup(index) {
+        popupWrappers[index].classList.add("active");
+        bodyScroll();
+    }
+
+    function removePopup(index) {
+        popupWrappers[index].classList.remove("active");
+        bodyScroll();
+    }
+
+    function bodyScroll() {
+        document.body.classList.toggle("no-scroll");
+    }
+    </script>
+<script>
+    
+  function razorpay(order) {
+    console.log(order, 'order');
+    console.log(order.amount, 'amount');
+    var options = {
+      "key": "rzp_test_lgequWFyf11KM4", // Enter the Key ID generated from the Dashboard
+      "amount": order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+      "currency": "INR",
+      "name": "Lensspace.com",
+      "description": "Test Transaction",
+      "image": "../public/images/logo 1.jpg",
+      "order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+      "handler": function(response) {
+        console.log(response,'++++++++++',order);
+        verifypayment(response, order)
+      },
+
+      "modal": {
+      "ondismiss": function() {
+        console.log('Payment window closed');
+        paymentFailed(order);
+      }
+    },
+
+      "prefill": {
+        "name": "Vinayak",
+        "email": "vinayak@example.com",
+        "contact": "90000900123"
+      },
+      "notes": {
+        "address": "Razorpay Corporate Office"
+      },
+      "theme": {
+        "color": "#3399cc"
+      }
+    }
+    var rzp1 = new Razorpay(options)
+    rzp1.open();
+  }
+
+  function verifypayment(payment, order,paymentId) {
+    console.log('12121212121212',payment, order, paymentId,'-------------1212121212121212--');
+    $.ajax({
+      url: 'verifyPayment',
+      method: 'post',
+      data: {
+        payment,
+        order,
+        paymentId
+      },
+       
+      success: (response) => {
+        if (response.status) {
+            location.href = '/success';
+        } else {
+            location.href = '/failure';
+        }
+
+      }
+    })
+  }
+
+  function paymentFailed(order) {
+    $.ajax({
+      url: 'paymentFailed',
+      method: 'post',
+      data: {
+        order,
+      },
+       
+      success: (response) => {
+        if (response.status) {
+            location.href = '/failure'
+
+      }
+    }})
+  }
+
+</script>
+
+<script>
+  function addAddress() {
+// Show the popup form
+document.getElementById("popupFormadd").style.display = "block";
+}
+
+function closePopup() {
+// Close the popup form
+document.getElementById("popupFormadd").style.display = "none";
+}
+
+function saveAddress() {
+// Get the form data
+var name = document.getElementById("nameInputadd").value;
+var mobileNumber = document.getElementById("mobileNumberInputadd").value;
+var address = document.getElementById("addressInputadd").value;
+var locality = document.getElementById("localityInputadd").value;
+var city = document.getElementById("cityInputadd").value;
+var pincode = document.getElementById("pincodeInputadd").value;
+var state = document.getElementById("stateInputadd").value;
+
+
+          // Validate the input values
+          if (name.trim() === "") {
+              alert("Name cannot be empty");
+              return;
+          }
+          if (!/^[a-zA-Z ]+$/.test(name)) {
+              alert("Name should not contain numbers or special characters");
+              return;
+          }
+          if (mobileNumber.trim() === "") {
+              alert("Mobile Number cannot be empty");
+              return;
+          }
+          if (!/^\+?\d{1,12}$/.test(mobileNumber)) {
+              alert("Mobile Number should contain a maximum of 12 numbers only");
+              return;
+          }
+          if (address.trim() === "") {
+              alert("Address cannot be empty");
+              return;
+          }
+          if (locality.trim() === "") {
+              alert("Locality cannot be empty");
+              return;
+          }
+          if (city.trim() === "") {
+              alert("City cannot be empty");
+              return;
+          }
+          if (pincode.trim() === "") {
+              alert("Pincode cannot be empty");
+              return;
+          }
+          if (!/^\d{6}$/.test(pincode)) {
+              alert("Pincode should contain exactly 6 digits");
+              return;
+          }
+          if (state.trim() === "") {
+              alert("State cannot be empty");
+              return;
+          }
+
+// Create a data object to send in the AJAX request
+var data = {
+  name: name,
+  mno: mobileNumber,
+  address: address,
+  locality: locality,
+  city: city,
+  pincode: pincode,
+  state: state
+};
+
+// Make an AJAX call to the "/addaddress" URL
+var xhr = new XMLHttpRequest();
+xhr.open("POST", "/submitAddress", true);
+xhr.setRequestHeader("Content-Type", "application/json");
+xhr.onreadystatechange = function() {
+  if (xhr.readyState === 4 && xhr.status === 200) {
+    // Request completed successfully
+    console.log(xhr.responseText); // You can do something with the response here
+    closePopup(); // Close the popup form after successful save
+  }
+};
+xhr.send(JSON.stringify(data));
+location.reload()
+
+}
+
+</script>
+
+</body>
+</html>

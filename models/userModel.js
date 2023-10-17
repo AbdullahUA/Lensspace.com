@@ -22,6 +22,21 @@ const userSchema = new mongoose.Schema({
         required:true,
         default:false
     },
+      referralCode: {
+    type: String,
+    unique: true,
+    required: true,
+  },
+  referrals: [{
+    referredUserId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User', // Reference to the User collection
+    },
+    dateReferred: {
+      type: Date,
+      default: Date.now,
+    },
+  }],
     wallet:{
         type:Number,
         default:0

@@ -38,9 +38,9 @@ const loadCart = async (req, res) => {
         }
       ]);
 
-      res.render("public/cart.ejs", { cart, user, count, cartTotal });
+      res.render("cart", { cart, user, count, cartTotal });
     } else {
-      res.render("public/cart.ejs", { user, count, cartTotal, cart: [] });
+      res.render("cart", { user, count, cartTotal, cart: [] });
     }
   } catch (error) {
     console.log(error); 

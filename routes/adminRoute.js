@@ -4,12 +4,12 @@ const session=require('express-session')
 const cookieparser=require('cookie-parser')
 const adminConfig=require("../configuration/AdminConfig")
 adminRoute.use(session({secret:adminConfig.sessionSecret,resave:false,saveUninitialized:false}))
-const validate = require('../middleware/adminAuth')
+const auth = require('../middleware/adminAuth')
 const adminController = require('../controllers/adminController')
 const categoryController=require('../controllers/categoryController')
 const productController=require('../controllers/productController')
 const couponController= require('../controllers/couponController')
-const bannerController = require('../controllers/bannerController')
+const offerController = require('../controllers/offerController')
 
 const multer=require('../multer/multer')
 const nocache=require('nocache')
@@ -29,67 +29,64 @@ const adminAuth=require("../middleware/adminAuth")
 
 
 //Login & validation
-adminRoute.get("/",adminController.adminLogin)
+adminRoute.get("/",auth.isLogout,adminController.adminLogin)
 adminRoute.post("/adminLoginValidate",adminController.varifyLogin)
-adminRoute.get('/dashboard',adminController.loadDashboard)
-adminRoute.get("/logout",adminController.adminLogout)
+adminRoute.get('/dashboard',auth.isLogin,adminController.loadDashboard)
+adminRoute.get("/logout",auth.isLogin,adminController.adminLogout)
 
 //UserManagement
-adminRoute.get("/user",adminController.loadUsers)
-adminRoute.post("/blockUser",adminController.blockUser)
-adminRoute.post("/unblockUser",adminController.UnblockUser)
+adminRoute.get("/user",auth.isLogin,adminController.loadUsers)
+adminRoute.post("/blockUser",auth.isLogin,adminController.blockUser)
+adminRoute.post("/unblockUser",auth.isLogin,adminController.UnblockUser)
 
 
 //CategoryManagement
-adminRoute.get('/category',categoryController.loadCategory)
-adminRoute.get('/addCategory',categoryController.loadAddCategory)
-adminRoute.post('/addCategory',categoryController.createCategory)
-adminRoute.get('/unlistCategory',categoryController.unlistCategory)
-adminRoute.get('/relistCategory',categoryController.relistCategory)
-adminRoute.get('/editCategory',categoryController.loadEditCategory)
-adminRoute.post('/editCategory',categoryController.updateCategory)
+adminRoute.get('/category',auth.isLogin,categoryController.loadCategory)
+adminRoute.get('/addCategory',auth.isLogin,categoryController.loadAddCategory)
+adminRoute.post('/addCategory',auth.isLogin,categoryController.createCategory)
+adminRoute.get('/unlistCategory',auth.isLogin,categoryController.unlistCategory)
+adminRoute.get('/relistCategory',auth.isLogin,categoryController.relistCategory)
+adminRoute.get('/editCategory',auth.isLogin,categoryController.loadEditCategory)
+adminRoute.post('/editCategory',auth.isLogin,categoryController.updateCategory)
 
 
 //ProductManagement
 
-adminRoute.get('/displayProduct',productController.displayProduct)
-adminRoute.get('/addProduct',productController.loadAddProduct)
-adminRoute.post('/addProduct',multer.upload,productController.createProduct)
-adminRoute.get('/unlistProduct',productController.unlistProduct)
-adminRoute.get('/relistProduct',productController.relistProduct)
-adminRoute.get('/editProduct',productController.loadEditProduct)
-adminRoute.post('/editProduct',multer.update,productController.updateProduct)
-adminRoute.post('/deleteImage',productController.deleteImage)
+adminRoute.get('/displayProduct',auth.isLogin,productController.displayProduct)
+adminRoute.get('/addProduct',auth.isLogin,productController.loadAddProduct)
+adminRoute.post('/addProduct',auth.isLogin,multer.upload,productController.createProduct)
+adminRoute.get('/unlistProduct',auth.isLogin,productController.unlistProduct)
+adminRoute.get('/relistProduct',auth.isLogin,productController.relistProduct)
+adminRoute.get('/editProduct',auth.isLogin,productController.loadEditProduct)
+adminRoute.post('/editProduct',auth.isLogin,multer.upload,productController.updateProduct)
+adminRoute.post('/deleteImage',auth.isLogin,productController.deleteImage)
 
 
 //Order Management 
-adminRoute.get('/orderList',adminController.loadOrderList)
-adminRoute.get('/orderDetails',adminController.loadOrderDetails)
-adminRoute.put('/orderStatus',adminController.changeOrderStatus)
-adminRoute.put('/returnOrder',adminController.returnOrder)
-adminRoute.put('/cancelOrder',adminController.cancelOrder)
+adminRoute.get('/orderList',auth.isLogin,adminController.loadOrderList)
+adminRoute.get('/orderDetails',auth.isLogin,adminController.loadOrderDetails)
+adminRoute.put('/orderStatus',auth.isLogin,adminController.changeOrderStatus)
+adminRoute.put('/returnOrder',auth.isLogin,adminController.returnOrder)
+adminRoute.put('/cancelOrder',auth.isLogin,adminController.cancelOrder)
 
 //Coupon Management
 
-adminRoute.get('/addCoupon',couponController.loadAddCoupon)
-adminRoute.post('/addCoupon',couponController.addCoupon)
-adminRoute.get('/generate-coupon-code',couponController.generateCouponCode)
-adminRoute.get('/couponList',couponController.couponList)
-adminRoute.delete('/deleteCoupon',couponController.deleteCoupon)
+adminRoute.get('/addCoupon',auth.isLogin,couponController.loadAddCoupon)
+adminRoute.post('/addCoupon',auth.isLogin,couponController.addCoupon)
+adminRoute.get('/generate-coupon-code',auth.isLogin,couponController.generateCouponCode)
+adminRoute.get('/couponList',auth.isLogin,couponController.couponList)
+adminRoute.delete('/deleteCoupon',auth.isLogin,couponController.deleteCoupon)
 
 
 //Sales Report
-adminRoute.get('/salesReport',adminController.getSalesReport)
-adminRoute.post('/salesReport',adminController.postSalesReport)
+adminRoute.get('/salesReport',auth.isLogin,adminController.getSalesReport)
+adminRoute.post('/salesReport',auth.isLogin,adminController.postSalesReport)
 
 
 
-//Banner 
-
-adminRoute.get('/addBanner',bannerController.getAddBanner)
-adminRoute.post('/addBanner',bannerController.postAddBanner)
-adminRoute.get('/bannerList',bannerController.bannerList)
-adminRoute.get('/deleteBanner',bannerController.deleteBanner)
+//offers
+adminRoute.get('/categoryOffer',auth.isLogin,offerController.loadCategoryOffer)
+adminRoute.post('/categoryOffer',auth.isLogin,offerController.updateCategoryOffer)
 
 
 

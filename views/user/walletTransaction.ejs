@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Lensspace.com</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css">
+    <%-include("../public/includes/headerPart.ejs")%>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  </head>
+  <body>
+ <style>
+    .wallet-top h1 {
+      color: #00000061;
+      font-size: 35px;
+    }
+  
+    .wallet-top .card {
+      background-image: linear-gradient(189deg, #c1d8ff 23%, #ffffff 114%);
+      width: 100%;
+      height: 200px;
+      box-shadow: 14px 11px 25px -9px #272b32b0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 6px;
+      border-color: azure;
+      position: relative;
+      border: 0;
+  
+    }
+ </style>
+
+    <section style="background-color: #38218b">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-12">
+                <div style="padding-top: 25px; padding-bottom: 25px;">
+                  <div class="inside">
+                    <div class="wallet-top">
+                      <div class="card">
+                        <h1>MY WALLET</h1>
+                        <h2>₹<%= user.wallet %> </h2>
+                        <span>
+                          <%= user.email %>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+        </div>
+       
+    </div>
+    
+</section>
+<br>
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Sl No</th>
+                <th>Date</th>
+                <th>Amount</th>
+                <th>Transaction type</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <% wallet.forEach(function(wallet,index) {%>
+            <tr>
+                <td><%=index+1%></td>
+                <td><%=wallet.walletTransaction.date.toLocaleString()%></td>
+                <td>₹ <%=wallet.walletTransaction.amount%></td>
+                <%if(wallet.walletTransaction.type=="Credit"){%>
+                <td><span class="label label-primary"><%=wallet.walletTransaction.type%></span></td>
+                <%}else{%>
+                <td><span class="label label-danger"><%=wallet.walletTransaction.type%></span></td>
+                <%}%>
+            </tr>
+            <% }) %>
+
+        </tbody>
+    </table>
+</div>
+
+    
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+
+
+</body>
+</html>

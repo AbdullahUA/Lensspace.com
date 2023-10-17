@@ -49,9 +49,9 @@ const checkOut = async (req, res) => {
           }}
       ])
       if(address){
-          res.render('public/checkOut.ejs', {address: address.addresses, cart, total, count,coupon})
+          res.render('checkOut', {address: address.addresses, cart, total, count,coupon})
       }else{
-          res.render('public/checkOut.ejs', {address: [], cart, total, count,coupon})
+          res.render('checkOut', {address: [], cart, total, count,coupon})
       }
   } catch (error) {
       console.log(error.message)
@@ -141,7 +141,7 @@ const postCheckOut  = async (req, res) => {
       orderHelper.findOrder(id, user._id).then((orders) => {
         const address = orders[0].shippingAddress
         const products = orders[0].productDetails 
-        res.render('public/orderDetails.ejs',{orders,address,products})
+        res.render('orderDetails',{orders,address,products})
       });      
     } catch (error) {
       console.log(error.message);
@@ -157,7 +157,7 @@ const postCheckOut  = async (req, res) => {
         { $unwind: "$orders" },
         { $sort: { "orders.createdAt": -1 } },
       ])
-      res.render('public/profileOrderList.ejs',{orders})
+      res.render('profileOrderList',{orders})
   
       
      
@@ -236,7 +236,7 @@ const postCheckOut  = async (req, res) => {
 
   const success= (req,res)=>{
     try {
-      res.render('public/success.ejs')
+      res.render('success')
       
     } catch (error) {
       console.log(error.message``)
@@ -244,7 +244,7 @@ const postCheckOut  = async (req, res) => {
   }
   const failure= (req,res)=>{
     try {
-      res.render('public/failure.ejs')
+      res.render('failure')
       
     } catch (error) {
       console.log(error.message``)

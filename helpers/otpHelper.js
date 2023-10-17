@@ -13,10 +13,24 @@ const generateOtp = () => {
     })
   }
 
+  const sendOtp = async (mobileNumber, otp) => {
+    try {
+      await client.messages.create({
+        body: `Your OTP for Lensspace.com Sign Up is: ${otp}`,
+        from: '+13343162433',
+        to: `+91${mobileNumber}`,
+      });
+    } catch (error) {
+      console.log(error.message);
+      throw new Error("Failed to send OTP");
+    }
+  };
+
 
 
 
 
   module.exports={
-    generateOtp
+    generateOtp,
+    sendOtp
   }

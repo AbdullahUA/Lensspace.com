@@ -118,10 +118,27 @@ console.log(req.files);
     if(req.body.stock<0 || req.body.stock.trim().length === 0 ){
       return res.render("updateProduct", { message: "Stock Should be greater than 0",product:productData,category:categories });
     }
-        const images = req.files.map((file) => file.filename);
-        const updatedImages = images.length > 0 ? images : productData.images;
-        await productHelper.updateProduct(req.body,req.files.filename)
-        res.redirect('/admin/displayProduct');
+
+    const images = req.files ? req.files.map(file => file.filename) : undefined;
+    const deletedImages = req.body.deletedImages ? req.body.deletedImages.split(",") : [];
+    const currentProduct = await Product.findById(req.body.id);
+
+
+     // If there are new images, add the old image names to the deleted images array
+      if (images && images.length > 0) {
+          images.forEach((img, index) => {
+              const oldImageName = currentProduct.images[index];
+              if (oldImageName) {
+                  deletedImages.push(oldImageName);
+              }
+          }); 
+      }
+      await productHelper.updateProduct(req.body,images,deletedImages)
+
+      console.log('helloooooooooooooooooo updated')
+      res.redirect('/admin/displayProduct');
+
+
     } catch (error) {
       console.log(error.message);
     }
@@ -137,7 +154,7 @@ const productDetails = async ( req, res ) => {
     const id = req.query.id
     const product = await Product.findOne({ _id : id }).populate('category')
     if(product.isProductListed == true && product.isListed == true){
-      res.render('public/productdetails.ejs',{product : product,count:count,category:categories})
+      res.render('productdetails',{product : product,count:count,category:categories})
   }}
   catch(error){
       console.log(error);
@@ -147,8 +164,9 @@ const productDetails = async ( req, res ) => {
 
 }
 const deleteImage = async (req, res) => {
+
   try {
-console.log(req.query,"ths is qury");
+console.log(req.query,"ths is function delelte imaaaaaaaaaaaaaaaaaaaage");
 
     const img=req.query.img
     console.log(img,">>>>>>>");

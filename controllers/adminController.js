@@ -20,7 +20,7 @@ const createToken = (id) => {
 const adminLogin = async(req,res)=>{
     try {
       if(req.session.admin_id){
-        res.render('dashboard')
+        res.redirect('/admin/dashboard')
     }else{
         res.render('adminLogin')
     } 
@@ -41,8 +41,8 @@ const varifyLogin = async(req,res)=>{
         if(adminData){
         if(adminData.password === password){
             req.session.admin_id=adminData._id
-
-              return res.render('dashboard')
+            
+              return res.redirect('/admin/dashboard')
       
             }else{  
                 res.render('adminLogin',{message:"Email or Password are Incorrect"});

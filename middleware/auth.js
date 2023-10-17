@@ -10,7 +10,7 @@ const isLogin = async (req, res, next)=>{
             const userData = await User.findById(req.session.user_id)
             if(userData && userData.is_blocked){
                 delete req.session.user_id
-            res.redirect("/login")
+            res.redirect("/error-403")
         }else{
             next()
         }
@@ -22,11 +22,7 @@ const isLogin = async (req, res, next)=>{
     console.log(error.message)
 }}
 
-// const checkSession = (req,res,next) => {
-//     // console.log(req.session.username,"lllll");
-//     res.locals.userName = req.session.username
-//     next()
-// }
+
 
 const checkSession = async (req, res, next) => {
     const user = await User.findById(req.session.user_id); // get the user from the database using the id stored in the session
