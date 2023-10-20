@@ -141,6 +141,7 @@ const User = require('../models/userModel')
       res.redirect("/checkOut"); 
     } catch (error) {
       console.log(error.message);
+      res.redirect('/error-500')
     }
   };
 
@@ -172,6 +173,7 @@ const User = require('../models/userModel')
       
     } catch (error) {
       console.log(error.message);
+      res.redirect('/error-500')
     }
   
   

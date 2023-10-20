@@ -148,6 +148,7 @@ header {
                 <div class="row">
                     <div class="col-lg-8">
                         <h3>Billing Details</h3>
+                        <br>
                         <%if(address[0]){%>
                         <form class="row contact_form" action="#" method="post" novalidate="novalidate">
                             <div class="col-md-6 form-group p_star">
@@ -176,14 +177,11 @@ header {
                                 <input type="text" class="form-control" id="add1" name="state" value="<%=address[0].state%>">
                             </div>
                             <%}else{%>
-                                <div class="col-md-12 form-group p_star">
-                                    <h1>Please Add An Address</h1>
-                                </div>
-    
+                            
                                 <%}%>
 
                         </form>
-
+                        
                         <div class="banner-desc" style="margin-left: 10px;">
                             <section class="intro">
                               <button type="button" class="btn btn-success" onclick="addAddress()">Add New Address</button>
@@ -256,11 +254,11 @@ header {
                     
                                 <div class="coupon_area" style="margin-top: 20px;">
                                     <div class="form-group row coupon_area p-t-15">
-                                        <div class="col-sm-6">
+                                        <div class="col-l-6">
                                             <% if(coupon && coupon.length > 0) { %>
                                                 <!-- Dropdown for selecting a coupon -->
                                                 <select class="form-control" name="couponCode" id="couponCode">
-                                                    <option value="" disabled selected>Enter coupon code...</option>
+                                                    <option value="" disabled selected>Enter coupon code</option>
                                                     <% coupon.forEach(function(coupon) { %>
                                                         <option value="<%= coupon.couponCode %>">
                                                             <%= coupon.couponCode %>
@@ -272,31 +270,36 @@ header {
                                                 <input type="text" class="form-control" placeholder="No coupons available" name="couponCode"
                                                     id="couponCode" disabled>
                                             <% } %>
-                                        </div>
-                                    <a class="primary-btn" href="#" style="width: 100px; height: 40px; margin-top: 10px; background-color: #007bff; color: #fff; border: none; padding: 10px 20px; cursor: pointer; text-align: center; text-decoration: none; display: inline-block;" onclick="applyCoupon('<%= total.cartTotal %>')">Apply</a>
+                                        
+                                    <a class="primary-btn" href="#" style="width: 100px; height: 40px; margin-top: 10px; padding-left: 5; background-color: #007bff; color: #fff; border: none; padding: 10px 10px; cursor: pointer; text-align: center; text-decoration: none; display: inline-block;" onclick="applyCoupon('<%= total.cartTotal %>')">Apply</a>
                                 </div>
+                                </div>
+                                </div>
+                                
                                 <span id="couponErr" style="color: red;"></span>
                     
                                 <div class="payment_item" style="margin-top: 20px;">
                                     <div class="radion_btn" style="display: flex; align-items: center;">
-                                        <input type="radio" id="f-option4" name="paymentOption" value="wallet" style="margin-right: 10px;">
+                                        <input type="radio" id="f-option4" name="paymentOption" value="wallet" style="margin-right: 10px; margin-bottom: 10px;">
                                         <label for="f-option4">Wallet</label>
                                         
                                     </div>
                                     <p style="color: #333;">Pay the amount from your wallet</p>
                                 </div>
+                                <br>
                     
                                 <div class="payment_item">
                                     <div class="radion_btn" style="display: flex; align-items: center;">
-                                        <input type="radio" id="f-option5" name="paymentOption" value="cod" checked style="margin-right: 10px;">
+                                        <input type="radio" id="f-option5" name="paymentOption" value="cod" checked style="margin-right: 10px; margin-bottom: 10px">
                                         <label for="f-option5">Cash On Delivery</label>
                                        
                                     </div>
                                     <p style="color: #333;">Pay the amount at your doorstep</p>
                                 </div>
+                                <br>
                                 <div class="payment_item">
                                     <div class="radion_btn" style="display: flex; align-items: center;">
-                                        <input type="radio" id="f-option6" name="paymentOption" value="razorpay" checked style="margin-right: 10px;">
+                                        <input type="radio" id="f-option6" name="paymentOption" value="razorpay" checked style="margin-right: 10px; margin-bottom: 10px">
                                         <label for="f-option6">Razorpay</label>
                                        
                                     </div>
@@ -316,11 +319,11 @@ header {
                
        
             <div class="billing-details">
-             <p class="top-title special">Addresses</p>
-             </div>
+             <h4 class="top-title special" >Your Saved Addresses</h4>
+             
              <br>
 
-             <div class="comment-list grid-view" style="height: 500px; overflow:scroll;" >
+             <div class="comment-list grid-view" style="height: 250px; overflow:scroll;" >
                     <form id="addressForm" action="/changeDefaultAddress" method="POST">
                     <% address.forEach(function(address,index) {%>
                         <label for="address<%=index%>">Address</label>
@@ -341,6 +344,9 @@ header {
                     <br>
                     <% }) %>
                 </form>
+            </div>
+            </div>
+        </div>
             </div>
            </div> 
             

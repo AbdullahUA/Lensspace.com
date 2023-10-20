@@ -49,24 +49,24 @@
                                         <td>₹ <%= order.orders.totalPrice %></td>
                                         <td>
                                             <% if (order.orders.orderStatus === 'Placed') { %>
-                                                <span class="label label-primary" style="background-color: rgb(22, 139, 255);">Placed</span>
+                                                <span class="badge bg-primary">Placed</span>
                                             <% } else if (order.orders.orderStatus === 'Delivered') { %>
-                                                <span class="label label-primary" style="background-color: rgb(0, 150, 5);">Delivered</span>
+                                                <span class="badge bg-success" >Delivered</span>
                                             <% } else if (order.orders.orderStatus === 'Cancel Requested') { %>
-                                                <span class="label label-primary" style="background-color: orange;">Cancel Requested</span>
+                                                <span class="badge bg-warning" >Cancel Requested</span>
                                             <% } else if (order.orders.orderStatus === 'Order Cancelled') { %>
-                                                <span class="label label-primary" style="background-color: red;">Order Cancelled</span>
+                                                <span class="badge bg-success" >Order Cancelled</span>
                                             <% } else if (order.orders.orderStatus === 'Dispatched') { %>
-                                                <span class="label label-primary" style="background-color: purple;">Dispatched</span>
+                                                <span class="badge bg-info">Dispatched</span>
                                             <% } else if (order.orders.orderStatus === 'Return Requested') { %>
-                                                <span class="label label-primary" style="background-color: rgb(18, 14, 69);">Return Requested</span>
+                                                <span class="badge bg-warning">Return Requested</span>
                                             <% } else if (order.orders.orderStatus === 'Return Accepted') { %>
-                                                <span class="label label-primary" style="background-color: rgb(10, 173, 173);">Return Accepted</span>
+                                                <span class="badge bg-primary">Return Accepted</span>
                                             <% } else if (order.orders.orderStatus === 'Cancel Accepted') { %>
-                                                <span class="label label-primary" style="background-color: rgb(2, 247, 255);">Cancel Accepted</span>
+                                                <span class="badge bg-success">Cancel Accepted</span>
                                             <% } %>
                                         </td>
-                                        <td><a href="/orderDetails?id=<%=order.orders._id%>" class="btn btn-default">View</a></td>
+                                        <td><a href="/orderDetails?id=<%=order.orders._id%>" class="badge bg-success">View</a></td>
                                         <% if (order.orders.orderStatus === 'Placed') { %>
                                             <td><a href="#" onclick="cancelOrder('<%= order.orders._id %>', 'Cancel Requested'); return false;"><i class="fas fa-times"></i> Cancel</a></td>
                                         <% } else if (order.orders.orderStatus === 'Delivered') { %>

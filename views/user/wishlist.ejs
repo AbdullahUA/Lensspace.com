@@ -39,12 +39,12 @@
           
           
                           <tr>
-                            <td class="image product-thumbnail"><img src="../admin/admin-assets/imgs/product-images/<%=item.wishListed.images[0]%>" alt="#"  width="100px" height="115px" ></td>
+                            <td><a href="/productDetails?id=<%=item.wishListed._id %>"><img src="../admin/admin-assets/imgs/product-images/<%=item.wishListed.images[0]%>" alt="#"  width="75px" height="75px" ></a></td>
                             <!-- <div class="d-flex">
                                 <img src="../product-images/<%=item.wishListed.images[0]%>" width="50px" height="50px"  alt="">
                             </div> -->
                             <td class="product-des product-name">
-                              <h5 class="product-name"><a href="/productPage?id=<%=item.wishListed._id %>"><%=item.wishListed.name%></a></h5>
+                              <h5 class="product-name"><a href="/productDetails?id=<%=item.wishListed._id %>"><%=item.wishListed.name%></a></h5>
                               <p class="font-xs"><%=item.wishListed.description%>
                               </p>
                             </td>

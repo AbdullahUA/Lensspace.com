@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>Home 03</title>
+	<title>Lensspace.com</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 <!--===============================================================================================-->	
@@ -92,56 +92,26 @@
 					
 					<div class="col-md-6 col-lg-5 p-b-30">
 						<div class="p-r-50 p-t-5 p-lr-0-lg">
-							<h4 class="mtext-105 cl2 js-name-detail p-b-14">
-								<%product.name%>
+							<h4 class="mtext-105 cl2 js-name-detail p-b-17">
+								<%= product && product.name ? product.name : 'Product Name Not Available' %>
 							</h4>
 
-							<span class="mtext-106 cl2">
-								<%product.price%>
-							</span>
-
-							<p class="stext-102 cl3 p-t-23">
-								Nulla eget sem vitae eros pharetra viverra. Nam vitae luctus ligula. Mauris consequat ornare feugiat.
+							<p class="stext-102 cl3 p-t-10">
+	
+								<%= product && product.description ? product.description : 'Description Not Available' %>
 							</p>
-							
+							<br>
+							<span class="mtext-106 cl2 p-b-4">
+								<span class="currency-symbol"><i class="fa fa-inr" aria-hidden="true"></i></span>
+								<%= product && product.price ? product.price : 'Price Not Available' %>
+							</span>
 							<!--  -->
 							<div class="p-t-33">
-								<div class="flex-w flex-r-m p-b-10">
-									<div class="size-203 flex-c-m respon6">
-										Size
-									</div>
+								
 
-									<div class="size-204 respon6-next">
-										<div class="rs1-select2 bor8 bg0">
-											<select class="js-select2" name="time">
-												<option>Choose an option</option>
-												<option>Size S</option>
-												<option>Size M</option>
-												<option>Size L</option>
-												<option>Size XL</option>
-											</select>
-											<div class="dropDownSelect2"></div>
-										</div>
-									</div>
-								</div>
+								
 
-								<div class="flex-w flex-r-m p-b-10">
-									<div class="size-203 flex-c-m respon6">
-										Color
-									</div>
-
-									<div class="size-204 respon6-next">
-										<div class="rs1-select2 bor8 bg0">
-											<select class="js-select2" name="time">
-												<option>Choose an option</option>
-												<option>Red</option>
-												<option>Blue</option>
-												<option>White</option>
-												<option>Grey</option>
-											</select>
-											<div class="dropDownSelect2"></div>
-										</div>
-									</div>
+									
 								</div>
 
 								<div class="flex-w flex-r-m p-b-10">
@@ -150,7 +120,7 @@
 											
 										</div>
 
-										<button class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail">
+										<button onclick="addtocart('<%=product._id%>')" class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail">
 											Add to cart
 										</button>
 									</div>
@@ -226,57 +196,60 @@
         <script src="public/vendor/isotope/isotope.pkgd.min.js"></script>
         <!--===============================================================================================-->
             <script src="public/vendor/sweetalert/sweetalert.min.js"></script>
-            <script>
-                $('.js-addwish-b2').on('click', function(e){
-                    e.preventDefault();
-                });
-        
-                $('.js-addwish-b2').each(function(){
-                    var nameProduct = $(this).parent().parent().find('.js-name-b2').html();
-                    $(this).on('click', function(){
-                        swal(nameProduct, "is added to wishlist !", "success");
-        
-                        $(this).addClass('js-addedwish-b2');
-                        $(this).off('click');
-                    });
-                });
-        
-                $('.js-addwish-detail').each(function(){
-                    var nameProduct = $(this).parent().parent().parent().find('.js-name-detail').html();
-        
-                    $(this).on('click', function(){
-                        swal(nameProduct, "is added to wishlist !", "success");
-        
-                        $(this).addClass('js-addedwish-detail');
-                        $(this).off('click');
-                    });
-                });
-        
-                /*---------------------------------------------*/
-        
-                $('.js-addcart-detail').each(function(){
-                    var nameProduct = $(this).parent().parent().parent().parent().find('.js-name-detail').html();
-                    $(this).on('click', function(){
-                        swal(nameProduct, "is added to cart !", "success");
-                    });
-                });
-            </script>
+            
         <!--===============================================================================================-->
-            <script src="public/vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
-            <script>
-                $('.js-pscroll').each(function(){
-                    $(this).css('position','relative');
-                    $(this).css('overflow','hidden');
-                    var ps = new PerfectScrollbar(this, {
-                        wheelSpeed: 1,
-                        scrollingThreshold: 1000,
-                        wheelPropagation: false,
-                    });
-        
-                    $(window).on('resize', function(){
-                        ps.update();
-                    })
-                });
+          
+
+				<!--===============================================================================================-->
+	<script src="/public/js/main.js"></script>
+
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+	<script>
+		function addtocart(proId) {
+			
+		  $.ajax({
+			url: '/addToCart/' + proId,
+			method: 'POST',
+	  
+			success: (response) => {
+			  if (response.status==true) {
+				Swal.fire({
+				  title: 'Added To Cart',
+				  text: 'Your Product has been added to Cart',
+				  icon: 'success',
+				  timer: 5000
+				})
+				
+			  }else if(response.status=='outOfStock'){
+				Swal.fire({
+				  title: 'Out of Stock',
+				  text: 'Product Out Of Stock',
+				  icon: 'error',
+				  timer: 5000
+				})
+			  }else if(response.status=='blocked'){
+				Swal.fire({
+				  title: 'You are blocked',
+				  icon: 'error',
+				  timer: 5000
+				})
+				setTimeout(() => {
+					window.location.href="/logout"
+				},5000)
+			  }
+			}
+		  })
+		}
+	</script>
+
+
+
+
+
+
             </script>
 </body>
 

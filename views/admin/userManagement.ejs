@@ -24,7 +24,6 @@
     <section class="content-main">
       <div class="content-header">
           <h2 class="content-title">Users list</h2>
-          
       </div>
       <div class="card mb-4">
           <div class="card-body">
@@ -43,8 +42,8 @@
                         <tbody>
                             <% user.forEach(user => { %>
                             <tr>
-                                <td width="10%"><%= user.name %></td>
-                                <td width="10%"><%= user.email %></td>
+                                <td width="20%"><%= user.name %></td>
+                                <td width="45%"><%= user.email %></td>
                                 <td><%= user.mobile %></td>
                                 <td>
                                     <% if (user.is_blocked == false) { %>
@@ -64,6 +63,8 @@
       </div> <!-- card end// -->
       
   </section> 
+      </div>
+    </div>
   <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
   <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <!-- Remove duplicated jQuery and DataTables references -->

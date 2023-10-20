@@ -44,8 +44,7 @@ const loadCart = async (req, res) => {
     }
   } catch (error) {
     console.log(error); 
-    res.send({ success: false, error: error.message });
-    
+    res.redirect('/error-500')    
   }
 };
 
