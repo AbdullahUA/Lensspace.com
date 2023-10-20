@@ -25,13 +25,15 @@ const home = async (req, res) => {
   try {
     
       const product = await Product.find({}) 
-        const category = await Category.find({ })
-      return res.render("home.ejs",{products:product, category}); 
+        const category = await Category.find({})
+        const displayedProducts = product.slice(0, 4);
+      return res.render("home.ejs",{products:displayedProducts,category}); 
       
     }
     
    catch (error) {
     console.log(error.message);
+    res.redirect('/error-500')
   }
 };
 
@@ -46,6 +48,7 @@ const login = async (req, res) => {
     res.render("login");
   } catch (error) {
     console.log(error.message);
+    res.redirect('/error-500')
   }
 };
 
@@ -54,6 +57,7 @@ const signup = async (req, res) => {
     res.render("signup");
   } catch (error) {
     console.log(error.message);
+    res.redirect('/error-500')
   }
 };
 
@@ -84,6 +88,7 @@ const insertUser = async (req, res) => {
   }
   } catch (error) {
     console.log(error.message);
+    res.redirect('/error-500')
   }
 };
 
@@ -182,7 +187,7 @@ const verifyOtp = async (req, res) => {
   }
 } catch (error) {
   console.log(error.message)
-         res.render("signup",{message:"Registration failed on referral issue"})  
+       res.render("signup",{message:"Registration failed on referral issue"})  
   }
 }
 
@@ -214,7 +219,8 @@ const verifyLogin = async(req, res)=>{
     }
 
   } catch (error) {
-    console.log(error.message)
+    console.log(error.message);
+    res.redirect('/error-500')
   }
 }
 
@@ -253,6 +259,7 @@ const userLogout = async(req, res)=>{
     res.redirect('/login')
   } catch (error) {
     console.log(error.message)
+    res.redirect('/error-500')
   }
 }
 
@@ -266,19 +273,26 @@ try {
 }
 }
 
-const forgotPasswordemail = async(req, res)=>{       
-  const user = await User.findOne({email : req.body.email})                                     
-  // req.session.number = number
-  if(!user){
-      res.render('forgotPassword',{message:"User Not Registered"})
-  }else{
-      const OTP = otpHelper.generateOtp()
-       await otpHelper.sendOtp(user.mobile,OTP)
-      console.log(`Forgot Password otp is --- ${OTP}`) 
-      req.session.otp = OTP
-      req.session.email = user.email
-      res.render('forgotPasswordOtp')
-  }
+const forgotPasswordemail = async(req, res)=>{  
+  try {
+    const user = await User.findOne({email : req.body.email})                                     
+    // req.session.number = number
+    if(!user){
+        res.render('forgotPassword',{message:"User Not Registered"})
+    }else{
+        const OTP = otpHelper.generateOtp()
+         await otpHelper.sendOtp(user.mobile,OTP)
+        console.log(`Forgot Password otp is --- ${OTP}`) 
+        req.session.otp = OTP
+        req.session.email = user.email
+        res.render('forgotPasswordOtp')
+    }
+   
+    
+  } catch (error) {
+    console.log(error.message);
+    res.redirect('/error-500')
+  }     
    
 }
 
@@ -331,6 +345,7 @@ const setNewPassword = async (req ,res) => {
   }
      catch (error) {
     console.log(error.message)
+    res.redirect('/error-500')
   }
  
 }
@@ -406,6 +421,7 @@ const editPassword = async (req, res) => {
       res.redirect("/profileDetails");
   } catch (error) {
     console.log(error.message);
+    res.redirect('/error-500')
   }
 };
 
@@ -483,7 +499,7 @@ const categoryPage = async (req,res,next) =>{
     }
   catch(err){
     console.log('category page error', err);
-    next(err);
+    res.redirect('/error-500')
     }
 }
 

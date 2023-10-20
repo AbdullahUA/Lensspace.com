@@ -153,12 +153,13 @@ const productDetails = async ( req, res ) => {
     const count = await cartHelper.getCartCount(usercart.id)
     const id = req.query.id
     const product = await Product.findOne({ _id : id }).populate('category')
+    console.log(product)
     if(product.isProductListed == true && product.isListed == true){
       res.render('productdetails',{product : product,count:count,category:categories})
   }}
   catch(error){
       console.log(error);
-      res.send({success:false,error:error.message})
+      res.redirect('/error-404')
 
 }
 

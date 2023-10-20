@@ -33,7 +33,7 @@
 
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody style="align-items: center;">
                             <% cart.forEach(function(cart,index) {%>
 
                             <tr>
@@ -47,7 +47,7 @@
                                         </div>
                                     </div>
                                 </td>
-                                <td >
+                                <td>
                                     <h5><i class="fa fa-inr" aria-hidden="true"></i>
                                         <%=cart.carted.price%></h5>
                                 </td>
@@ -70,34 +70,21 @@
                                 </td>
                                 <td class="action" style="padding-left: 40px; font-size: 20px;" data-title="Remove"><a href="#" class="text-muted" 
                                   onclick="deleteProduct('<%=cart._id%>','<%=cart.item%>','<%= cart.quantity %>')"><i class="fa fa-trash" aria-hidden="true"></i>
-                                </a></td>
-                       
-
-                                
+                                </a>
+                                </td>
                             </tr>
                             <% }) %>
                             <tr class="bottom_button">
-                                <td>
-                                </td>
                                 <td></td>
-                                <td>
-
-                                </td>
-                                <td>
-
-                                </td>
-                             
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
                             </tr>
                             <tr>
-                                <td>
-
-                                </td>
-                                <td>
-
-                                </td>
-                                <td>
-
-                                </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
                                 <td>
                                     <h5>Sub Total</h5>
                                 </td>
@@ -106,21 +93,11 @@
                                 </td>
                             </tr>
                             <tr class="out_button_area">
-                                <td>
-
-                                </td>
-                                <td>
-
-                                </td>
-                                <td>
-
-                                </td>
-                                <td>
-                                    
-                                </td>
-                                <td>
-
-                                </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
                                 <td>
                                     <div class="checkout_btn_inner d-flex align-items-center">
                                         <a class="btn btn-grey" href="/shop">Continue Shopping</a>

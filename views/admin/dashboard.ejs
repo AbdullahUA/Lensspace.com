@@ -26,6 +26,8 @@
                   <h2 class="content-title card-title">Dashboard </h2>
                   <p>Whole data about your business here</p>
               </div>
+              <br>
+              <h1 style="padding-left: 30px; color: rgb(28, 28, 156);">Dashboard</h1>
             
           </div>
           <div class="row">
@@ -146,40 +148,40 @@
                                       <th scope="col">Date</th>
                                   </tr>
                               </thead>
-                              <% order.forEach(function(order,index) {%>
-                                  <tr>
-                                      <td><%=order.orders._id%></td>
-                                      <td><b><%=order.orders.name%></b></td>
-                                      <td>₹<%=order.orders.totalPrice%></td>
-                                      <!-- <td><span class="badge rounded-pill alert-success" id="status-val-<%= order.orders._id %>"><%=order.orders.orderStatus%></span></td> -->
-  
-  
-  
-  
-                                      <td>
-                                          <% if (order.orders.orderStatus == 'Placed') { %>
-                                              <div class="badge rounded-pill alert-primary"><%= order.orders.orderStatus %></div>
-                                          <% } else if (order.orders.orderStatus == 'Dispatched') { %>
-                                              <div class="badge rounded-pill alert-info"><%= order.orders.orderStatus %></div>
-                                          <% } else if (order.orders.orderStatus == 'Cancel Requested' ) { %>
-                                              <div class="badge rounded-pill alert-warning"><%= order.orders.orderStatus %></div>
-                                          <% } else if (order.orders.orderStatus == 'Delivered') { %>
-                                              <div class="badge rounded-pill alert-success"><%= order.orders.orderStatus %></div>
-                                          <% } else if (order.orders.orderStatus == 'Return Requested' ) { %>
-                                              <div class="badge rounded-pill alert-warning"><%= order.orders.orderStatus %></div>
-                                          <% } else { %>
-                                              <div class="badge rounded-pill alert-danger"><%= order.orders.orderStatus %></div>
-                                          <% } %>
-                                      </td>
-  
-  
-  
-  
-  
-                                      <td><%=order.orders.createdAt.toLocaleString()%></td>
-                              
-                                  </tr>
-                                  <% }) %>
+                              <% order.forEach(function(order, index) { %>
+                                <tr>
+                                    <td><%= order.orders._id %></td>
+                                    <td><b><%= order.orders.name %></b></td>
+                                    <td>₹<%= order.orders.totalPrice %></td>
+                                    <!-- Check if orderStatus is set as expected -->
+                                    <% if (order.orders.orderStatus == 'Placed') { %>
+                                        <td>
+                                            <div class="alert alert-primary text-center"><%= order.orders.orderStatus %></div>
+                                        </td>
+                                    <% } else if (order.orders.orderStatus == 'Dispatched') { %>
+                                        <td>
+                                            <div class="alert alert-info text-center"><%= order.orders.orderStatus %></div>
+                                        </td>
+                                    <% } else if (order.orders.orderStatus == 'Cancel Requested') { %>
+                                        <td>
+                                            <div class=" alert alert-warning text-center"><%= order.orders.orderStatus %></div>
+                                        </td>
+                                    <% } else if (order.orders.orderStatus == 'Delivered') { %>
+                                        <td>
+                                            <div class=" alert alert-success text-center"><%= order.orders.orderStatus %></div>
+                                        </td>
+                                    <% } else if (order.orders.orderStatus == 'Return Requested') { %>
+                                        <td>
+                                            <div class=" alert alert-warning text-center"><%= order.orders.orderStatus %></div>
+                                        </td>
+                                    <% } else { %>
+                                        <td>
+                                            <div class=" alert alert-danger text-center"><%= order.orders.orderStatus %></div>
+                                        </td>
+                                    <% } %>
+                                    <td><%= order.orders.createdAt.toLocaleString() %></td>
+                                </tr>
+                            <% }) %>
   
                                  
                                  
@@ -195,8 +197,10 @@
                   </div> <!-- table-responsive end// -->
               </div>
           </div>
-         
+        
       </section>
+      </div>
+    </div>
     
 
       <script>
