@@ -48,7 +48,7 @@ userRoute.post('/setNewPassword',userController.setNewPassword)
 
 //Shop
 userRoute.get("/shop",auth.isLogin,userController.displayProducts)
-userRoute.get('/productdetails',auth.isLogin,productController.productDetails)
+userRoute.get('/productDetails',auth.isLogin,productController.productDetails)
 userRoute.get('/categoryShop',auth.isLogin,userController.categoryPage)
 
 
