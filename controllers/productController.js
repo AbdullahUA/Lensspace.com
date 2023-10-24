@@ -155,7 +155,7 @@ const productDetails = async ( req, res ) => {
     const product = await Product.findOne({ _id : id }).populate('category')
     console.log(product)
     if(product.isProductListed == true && product.isListed == true){
-      res.render('productdetails',{product : product,count:count,category:categories})
+      res.render('productDetails',{product : product,count:count,category:categories})
   }}
   catch(error){
       console.log(error);
