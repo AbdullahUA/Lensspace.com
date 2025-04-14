@@ -9,8 +9,8 @@ const Razorpay = require("razorpay");
 require('dotenv').config();
 
 var instance = new Razorpay({
-  key_id: process.env.RAZORPAY_ID,
-  key_secret: process.env.RAZORPAY_SECRET,
+  key_id: process.env.RAZORPAY_KEY_ID,
+  key_secret: process.env.RAZORPAY_KEY_SECRET
 });
 
 
@@ -46,7 +46,7 @@ const verifyPayment =  async(details) => {
   try {
     await Order.updateOne({})
 
-    let key_secret = process.env.RAZORPAY_SECRET;
+    let key_secret = process.env.RAZORPAY_KEY_SECRET;
     return new Promise((resolve, reject) => {
       const crypto = require("crypto");
       let hmac = crypto.createHmac("sha256", key_secret);

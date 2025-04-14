@@ -6,10 +6,11 @@ const storage = multer.diskStorage({
         const destinationPath = path.resolve(__dirname, '../views/admin/admin-assets/imgs/product-images/');
         cb(null, destinationPath);
     },
-    filename: function (req, file, cb) {
-        const fileName = Date.now() + path.extname(file.originalname);
-        cb(null, fileName);
-    }
+ filename: function (req, file, cb) {
+    const fileName = Date.now() + '-' + Math.round(Math.random() * 1E9) + path.extname(file.originalname);
+    console.log('Saving file:', fileName);
+    cb(null, fileName);
+}
 });
 
 const fileFilter = (req, file, cb) => {

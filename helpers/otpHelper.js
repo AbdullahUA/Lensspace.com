@@ -17,7 +17,7 @@ const generateOtp = () => {
     try {
       await client.messages.create({
         body: `Your OTP for Lensspace.com Sign Up is: ${otp}`,
-        from: '+13343162433',
+        from: '+18599554826',
         to: `+91${mobileNumber}`,
       });
     } catch (error) {
