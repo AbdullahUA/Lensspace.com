@@ -14,6 +14,7 @@ var instance = new Razorpay({
   key_secret: process.env.RAZORPAY_KEY_SECRET
 });
 
+console.log("RAZORPAY_KEY_ID:", process.env.RAZORPAY_KEY_ID);
 
 const generateRazorpay = (userId, total)=> {
   try {

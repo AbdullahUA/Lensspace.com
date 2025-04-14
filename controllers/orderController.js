@@ -15,8 +15,6 @@ const Coupon= require('../models/couponModel')
 
 
 
-
-
 const checkOut = async (req, res) => {
   try {
       const user = res.locals.user
