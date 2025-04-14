@@ -2,6 +2,7 @@
 require('dotenv').config()
 const mongoose = require ("mongoose")
 
+console.log("RAZORPAY_KEY_ID:", process.env.RAZORPAY_KEY_ID);
 
 mongoose.connect(process.env.MONGODBURL, {
     useNewUrlParser: true,
