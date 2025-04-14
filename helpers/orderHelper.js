@@ -1,3 +1,4 @@
+require('dotenv').config();
 const Order = require('../models/orderModel');
 const Product = require('../models/productModel')
 const Cart = require('../models/cartModel');
@@ -6,7 +7,7 @@ const { ObjectId } = require("mongodb");
 const User = require('../models/userModel')
 const Razorpay = require("razorpay");
 
-require('dotenv').config();
+
 
 var instance = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID,
@@ -196,6 +197,7 @@ const placeOrder = (data,user)=>{
                   });
                 }
              
+
 
 
 
